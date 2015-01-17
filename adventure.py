@@ -28,7 +28,13 @@ def main():
         print('Walkthrough.')
         return
 
+    world.initialize_world()
 
+    # Testing
+    print(world.worldmap[1][0])
+    print(world.worldmap[1][0].exit_available('north'))
+    print(world.worldmap[1][0].unblock_exit('north'))
+    print(world.worldmap[1][0].unblock_exit('south'))
     print(world.worldmap[1][0])
     return
 
