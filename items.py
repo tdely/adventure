@@ -12,3 +12,7 @@ class Item:
 
     def __str__(self):
         return 'Item::name={0}, description={1}'.format(self.name, self.description)
+
+
+itemlist = {'axe': Item('Axe', 'a woodcutters axe'),
+            'ruby': Item('Ruby', 'a precious red gem')}

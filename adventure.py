@@ -24,12 +24,11 @@ def main():
     args = parser.parse_args()
 
     if args.cheat:
+        # TODO: write a 'walkthrough' after game is finished
         print('Walkthrough.')
         return
 
 
-    # print('Nothing yet.')
-    # world.Area(None, 'Forest')
     print(world.worldmap[1][0])
     return
 
