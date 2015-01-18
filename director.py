@@ -3,20 +3,13 @@
 import player
 import world
 import items
-import sys
-"""
-Mediates commands and changes
-"""
+# TODO: revamp item handling
 
 DEBUG = True
 
 world.initialize_world()
 actor = player.Player(world.start_area)
 actor.inventory.append(items.trinket_list['axe'])
-
-
-def menu():
-    pass
 
 
 def control():
@@ -33,7 +26,8 @@ def control():
                'interact': interact,
                'inventory': inventory,
                'move': move,
-               'exit': exit_game, }
+               'exit': exit_game,
+               'bash': bash, }
     try:
         rcode = options[command](*arguments)
     except KeyError as e:
@@ -48,19 +42,48 @@ def control():
 
 
 def show_help():
+    """
+    List command help
+    """
     print('use [item] [target],  interact [object],  inventory,  move [direction],  bash [object]')
 
 
-def use(this=None, that=None):
-    if this is None and that is None:
-        print("You can't use nothing.")
+def use(item=None, obj=None):
+    """
+    Use an item on an object
+    """
+    match = False
+    if item is None and obj is None:
+        print("You reach into your pockets but forgot what you are looking for.")
         return False
-    elif that is None:
-        print("You must use '{0}' on something.".format(this))
-    print('Use is not implemented')
+    # Does the player have the item?
+    for i in actor.get_inventory():
+        if item == i.name:
+            match = True
+            break
+
+    if not match:
+        print("You don't carry '{0}'.".format(item))
+        return False
+
+    if obj is None:
+        print("You reach for '{0}', but forgot what you were going to do.".format(item))
+        return False
+
+    y, x = actor.get_position()
+    for i in world.world_map[y][x].items:
+        if obj == i.name:
+            print('Use is not implemented')
+            return True
+
+    print("You try to use '{0}' with '{1}', but can't find '{1}'.".format(item, obj))
+    return False
 
 
 def interact(obj=None):
+    """
+    Interact with an object
+    """
     if obj is None:
         print("You can't interact with nothing.")
         return False
@@ -73,8 +96,8 @@ def inventory():
     """
     if len(actor.inventory) > 0:
         print('Inventory:')
-        for i in actor.inventory:
-            print(i.name)
+        for i in actor.get_inventory():
+            print('{0}: {1}'.format(i.name, i.description))
     else:
         print('Your inventory is empty.')
 
@@ -91,17 +114,39 @@ def move(direction=None):
         return False
     if actor.move(direction):
         print('Moved {0}.'.format(direction))
-        enter_area()
+        _enter_area()
         return True
     print("You can't move {0}.".format(direction))
     return False
 
 
-def bash():
-    print('Bash is not implemented')
+def bash(obj=None):
+    """
+    Destroy an object
+    """
+    if obj is None:
+        print("You swing your fist in the air.")
+        return False
+
+    y, x = actor.get_position()
+    for i in world.world_map[y][x].items:
+        if obj == i.name:
+            if i.breakable:
+                world.world_map[y][x].items.remove(i)
+                print("You bash '{0}' to dust.".format(obj))
+                return True
+            else:
+                print("You bash '{0}' to no effect.".format(obj))
+                return False
+
+    print("You look for '{0}' intent on breaking it but can't find it.".format(obj))
+    return False
 
 
-def enter_area():
+def _enter_area():
+    """
+    placeholder
+    """
     y, x = actor.get_position()
     world.world_map[y][x].describe()
 
@@ -122,7 +167,7 @@ def play():
     """
     placeholder
     """
-    enter_area()
+    _enter_area()
     while control():
         pass
 

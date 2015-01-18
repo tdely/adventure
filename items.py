@@ -40,8 +40,8 @@ class Trinket(Item):
         self.description = description
         super().__init__(self.name, self.description, False, True, False)
 
-furniture_list = {'rock': Furniture('Rock', 'a small boulder', False, False),
-                  'tree': Furniture('Tree', 'a medium sized tree', False, False), }
+furniture_list = {'rock': Furniture('rock', 'a small boulder', True, False),
+                  'tree': Furniture('tree', 'a medium sized tree', False, False), }
 
-trinket_list = {'axe': Trinket('Axe', 'a woodcutters axe'),
-                'ruby': Trinket('Ruby', 'a precious red gem'), }
+trinket_list = {'axe': Trinket('axe', 'a woodcutters axe'),
+                'ruby': Trinket('ruby', 'a precious red gem'), }

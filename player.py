@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
 import world
+# TODO: revamp item handling
 
 
 class Player:
@@ -20,12 +21,15 @@ class Player:
         return self.y, self.x
 
     def get_inventory(self):
-        for i in self.inventory:
-            print(i.description)
+        """
+        Get inventory of player
+        :rtype: list
+        """
+        return self.inventory
 
     def move(self, direction):
         """
-        Move player
+        Change player position
         :rtype: bool
         """
         if direction not in world.world_map[self.y][self.x].blocked:
@@ -35,9 +39,3 @@ class Player:
             return True
         else:
             return False
-
-    def bash(self, target):
-        """
-        placeholder
-        """
-        print('Player::Bash not implemented')
