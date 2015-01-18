@@ -134,7 +134,7 @@ class Area:
             if adj_y >= 0 and adj_x >= 0:
                 try:
                     if world_map[adj_y][adj_x] is not None:
-                        # Remove block on adjacent area
+                        # Block from adjacent area
                         inv_y, inv_x = Direction[direction].value
                         inv_y *= -1
                         inv_x *= -1
@@ -166,11 +166,13 @@ def initialize_world() -> object:
                         tile.block_exit(direction)
 
 # Forest
-forest01 = Area(None, 'forest01', ['south'], '')
-forest02 = Area(None, 'forest02', None, '')
-forest03 = Area(None, 'forest03', ['north', 'south'], 'A forest path.')
-forest04 = Area(None, 'forest04', None, '')
-forest05 = Area(None, 'forest05', None, '')
+forest01 = Area(None, 'forest01', ['south'], 'F0.0')
+forest02 = Area(None, 'forest02', None, 'F0.1')
+forest03 = Area(None, 'forest03', ['north', 'south'], 'F1.0')
+forest04 = Area(None, 'forest04', None, 'F1.1')
+forest05 = Area(None, 'forest05', None, 'F1.2')
+
+start_area = (0, 0)
 
 world_map = [[forest01, forest02, None],
              [forest03, forest04, forest05]]
