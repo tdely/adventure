@@ -26,8 +26,8 @@ class Area:
     """
     placeholder
     """
-    def __init__(self, _items, name, blocked, description):
-        self.items = _items if _items is not None else []
+    def __init__(self, item_list, name, blocked, description):
+        self.items = item_list if item_list is not None else []
         self.name = name
         self.x = None
         self.y = None
@@ -167,13 +167,21 @@ def initialize_world() -> object:
                         tile.block_exit(direction)
 
 # Forest
-forest01 = Area(['rock', 'tree'], 'forest01', ['south'], 'F0.0')
-forest02 = Area(None, 'forest02', None, 'F0.1')
-forest03 = Area(None, 'forest03', ['north', 'south'], 'F1.0')
-forest04 = Area(None, 'forest04', None, 'F1.1')
-forest05 = Area(None, 'forest05', None, 'F1.2')
+fs01 = Area(['boulder', 'tree'], 'forest01', ['south', 'east'], 'F0.0')
+fs02 = Area(None, 'forest02', ['west'], 'F0.1')
+fs03 = Area(None, 'forest03', ['north'], 'F1.0')
+fs04 = Area(None, 'forest04', None, 'F1.1')
+fs05 = Area(None, 'forest05', None, 'F1.2')
+fs06 = Area(None, 'forest06', None, 'F2.0')
+fs07 = Area(None, 'forest07', None, 'F2.1')
+fs08 = Area(None, 'forest08', None, 'F2.2')
+fs09 = Area(None, 'forest09', None, 'F3.0')
+fs10 = Area(None, 'forest10', None, 'F3.1')
+fs11 = Area(None, 'forest11', None, 'F3.2')
 
 start_area = (0, 0)
 
-world_map = [[forest01, forest02, None],
-             [forest03, forest04, forest05]]
+world_map = [[fs01, fs02, None],
+             [fs03, fs04, fs05],
+             [fs06, fs07, fs08],
+             [fs09, fs10, fs11], ]

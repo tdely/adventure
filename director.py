@@ -4,7 +4,7 @@ import player
 import world
 import items
 
-DEBUG = True
+DEBUG = False
 
 world.initialize_world()
 actor = player.Player(world.start_area)
@@ -15,7 +15,7 @@ def control():
     """
     Method for player interaction
     """
-    rcode = None
+    rcode = False
     string = input(': ').lower()
     arguments = string.split()
     command = arguments.pop(0)
@@ -25,8 +25,10 @@ def control():
                'interact': interact,
                'inventory': inventory,
                'move': move,
-               'exit': exit_game,
-               'bash': bash, }
+               'bash': bash,
+               'examine': examine,
+               'describe': _enter_area,
+               'exit': exit_game, }
     try:
         rcode = options[command](*arguments)
     except KeyError as e:
@@ -35,25 +37,30 @@ def control():
     except TypeError as e:
         print("Too much information.")
         print("Debug: TypeError {0}".format(e)) if DEBUG else None
-    if rcode is 'exit':
-        return False
-    return True
+    return rcode
 
 
 def show_help():
     """
     List command help
     """
-    print('use [item] [target],  interact [object],  inventory,  move [direction],  bash [object]')
+    print('''Commands:
+    use [item] [target]
+    interact [target]
+    inventory
+    move [direction]
+    bash [target]
+    examine
+    exit''')
 
 
-def use(item=None, obj=None):
+def use(item=None, target=None):
     """
     Use an item on an object
     """
     match = False
-    if item is None and obj is None:
-        print("You reach into your pockets but forgot what you are looking for.")
+    if item is None and target is None:
+        print("You reach into your pockets but forgot what you were looking for.")
         return False
     # Does the player have the item?
     for i in actor.get_inventory():
@@ -65,28 +72,29 @@ def use(item=None, obj=None):
         print("You don't carry '{0}'.".format(item))
         return False
 
-    if obj is None:
+    if target is None:
         print("You reach for '{0}', but forgot what you were going to do.".format(item))
         return False
 
     y, x = actor.get_position()
     for i in world.world_map[y][x].items:
-        if obj == i:
+        if target == i:
             print('Use is not implemented')
-            return True
+            return 'use', item, target
 
-    print("You try to use '{0}' with '{1}', but can't find '{1}'.".format(item, obj))
+    print("You try to use '{0}' with '{1}', but can't find '{1}'.".format(item, target))
     return False
 
 
-def interact(obj=None):
+def interact(target=None):
     """
     Interact with an object
     """
-    if obj is None:
+    if target is None:
         print("You can't interact with nothing.")
         return False
     print('Interact is not implemented')
+    return 'interact', target
 
 
 def inventory():
@@ -119,33 +127,38 @@ def move(direction=None):
     return False
 
 
-def bash(obj=None):
+def bash(target=None):
     """
     Destroy an object
     """
-    if obj is None:
+    if target is None:
         print("You swing your fist in the air.")
         return False
 
     y, x = actor.get_position()
     for i in world.world_map[y][x].items:
-        if obj == i:
+        if target == i:
             if items.furniture_list[i].breakable:
                 world.world_map[y][x].items.remove(i)
-                print("You bash '{0}' to dust.".format(obj))
-                return True
+                print("You bash '{0}' to dust.".format(target))
+                return 'bash', target
             else:
-                print("You bash '{0}' to no effect.".format(obj))
+                print("You bash '{0}' to no effect.".format(target))
                 return False
 
-    print("You look for '{0}' intent on breaking it but can't find it.".format(obj))
+    print("You look for '{0}' intent on breaking it but can't find it.".format(target))
     return False
+
+
+def examine(target):
+    pass
 
 
 def _enter_area():
     """
     placeholder
     """
+    print(chr(27) + '[2J' + chr(27) + '[;H')
     y, x = actor.get_position()
     world.world_map[y][x].describe()
 
@@ -167,23 +180,22 @@ def play():
     placeholder
     """
     _enter_area()
-    while control():
-        pass
+    while True:
+        rcode = control()
+        print(rcode) if DEBUG else None
+        y, x = actor.get_position()
+        if rcode is True or rcode is False:
+            continue
+        if rcode == 'exit':
+            break
 
-    # Testing
-    # print(world.world_map[1][0])
-    # print(world.world_map[1][0].exit_available('north'))
-    # print(world.world_map[1][0].unblock_exit('north'))
-    # print(world.world_map[1][0].unblock_exit('south'))
-    # print(world.world_map[1][0])
-    #
-    # p1 = player.Player((0, 0))
-    # p1.inventory.append(items.itemlist['axe'])
-    # p1.get_inventory()
-    # p1.inventory.remove(items.itemlist['axe'])
-    # p1.get_inventory()
-    #
-    # print(items.Furniture('rock', 'a large rock', False, False))
-    # print(items.itemlist['ruby'])
-    #
-    # world.world_map[1][0].describe()
+        if rcode[0] == 'use':
+            print('{0} {1} {2}'.format(rcode[0], rcode[1], rcode[2])) if DEBUG else None
+        elif rcode[0] == 'bash' in rcode:
+            print('{0} {1}'.format(rcode[0], rcode[1])) if DEBUG else None
+            if world.world_map[y][x] is world.fs01:
+                if rcode[1] == 'boulder':
+                    world.fs01.unblock_exit('east')
+                    _enter_area()
+        elif rcode[0] == 'interact':
+            print('{0} {1}'.format(rcode[0], rcode[1])) if DEBUG else None
