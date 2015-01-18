@@ -2,7 +2,6 @@
 # -*- encoding: utf-8 -*-
 import items
 from enum import Enum
-# TODO: revamp item handling
 
 world_map = []
 
@@ -44,7 +43,8 @@ class Area:
         :rtype : bool
         """
         print(self.description)
-        for item in self.items:
+        for i in self.items:
+            item = items.furniture_list[i]
             print('{0}'.format(item.description))
 
         for direction in ('north', 'west', 'south', 'east'):
@@ -167,7 +167,7 @@ def initialize_world() -> object:
                         tile.block_exit(direction)
 
 # Forest
-forest01 = Area([items.furniture_list['rock'], items.furniture_list['tree']], 'forest01', ['south'], 'F0.0')
+forest01 = Area(['rock', 'tree'], 'forest01', ['south'], 'F0.0')
 forest02 = Area(None, 'forest02', None, 'F0.1')
 forest03 = Area(None, 'forest03', ['north', 'south'], 'F1.0')
 forest04 = Area(None, 'forest04', None, 'F1.1')

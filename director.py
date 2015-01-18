@@ -3,13 +3,12 @@
 import player
 import world
 import items
-# TODO: revamp item handling
 
 DEBUG = True
 
 world.initialize_world()
 actor = player.Player(world.start_area)
-actor.inventory.append(items.trinket_list['axe'])
+actor.inventory.append('axe')
 
 
 def control():
@@ -58,7 +57,7 @@ def use(item=None, obj=None):
         return False
     # Does the player have the item?
     for i in actor.get_inventory():
-        if item == i.name:
+        if item == i:
             match = True
             break
 
@@ -72,7 +71,7 @@ def use(item=None, obj=None):
 
     y, x = actor.get_position()
     for i in world.world_map[y][x].items:
-        if obj == i.name:
+        if obj == i:
             print('Use is not implemented')
             return True
 
@@ -97,7 +96,7 @@ def inventory():
     if len(actor.inventory) > 0:
         print('Inventory:')
         for i in actor.get_inventory():
-            print('{0}: {1}'.format(i.name, i.description))
+            print('{0}: {1}'.format(i, items.trinket_list[i].description))
     else:
         print('Your inventory is empty.')
 
@@ -130,8 +129,8 @@ def bash(obj=None):
 
     y, x = actor.get_position()
     for i in world.world_map[y][x].items:
-        if obj == i.name:
-            if i.breakable:
+        if obj == i:
+            if items.furniture_list[i].breakable:
                 world.world_map[y][x].items.remove(i)
                 print("You bash '{0}' to dust.".format(obj))
                 return True
