@@ -79,7 +79,6 @@ def use(item=None, target=None):
     y, x = actor.get_position()
     for i in world.world_map[y][x].items:
         if target == i:
-            print('Use is not implemented')
             return 'use', item, target
 
     print("You try to use '{0}' with '{1}', but can't find '{1}'.".format(item, target))
@@ -93,7 +92,6 @@ def interact(target=None):
     if target is None:
         print("You can't interact with nothing.")
         return False
-    print('Interact is not implemented')
     return 'interact', target
 
 
@@ -182,20 +180,35 @@ def play():
     _enter_area()
     while True:
         rcode = control()
+
         print(rcode) if DEBUG else None
-        y, x = actor.get_position()
+
         if rcode is True or rcode is False:
             continue
         if rcode == 'exit':
             break
 
-        if rcode[0] == 'use':
-            print('{0} {1} {2}'.format(rcode[0], rcode[1], rcode[2])) if DEBUG else None
-        elif rcode[0] == 'bash' in rcode:
-            print('{0} {1}'.format(rcode[0], rcode[1])) if DEBUG else None
-            if world.world_map[y][x] is world.fs01:
+        generic_fail = 'You try but fail, better think of something else.'
+
+        y, x = actor.get_position()
+        command = rcode[0]
+        # Area specific events.
+        if world.world_map[y][x] is world.fs01:
+            if command == 'use':
+                if rcode[1] == 'axe' and rcode[2] == 'tree':
+                    world.fs01.items.remove('tree')
+                    world.fs01.unblock_exit('south')
+                    _enter_area()
+                else:
+                    print(generic_fail)
+            elif command == 'bash' in rcode:
                 if rcode[1] == 'boulder':
                     world.fs01.unblock_exit('east')
                     _enter_area()
-        elif rcode[0] == 'interact':
-            print('{0} {1}'.format(rcode[0], rcode[1])) if DEBUG else None
+            elif command == 'interact':
+                print(generic_fail)
+        else:
+            if command == 'use':
+                print(generic_fail)
+            elif command == 'interact':
+                print(generic_fail)
