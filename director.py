@@ -22,15 +22,25 @@ def control():
 
     options = {'help': show_help,
                'use': use,
+               'u': use,
                'interact': interact,
+               'int': interact,
                'inventory': inventory,
+               'inv': inventory,
                'move': move,
+               'm': move,
                'bash': bash,
+               'b': bash,
                'take': take,
+               't': take,
                'drop': drop,
+               'dr': drop,
                'examine': examine,
+               'exa': examine,
                'search': search,
+               's': search,
                'describe': describe,
+               'de': describe,
                'exit': exit_game, }
     try:
         rcode = options[command](*arguments)
@@ -48,14 +58,16 @@ def show_help():
     List command help
     """
     print('''Commands:
-    use [item] [target]
-    interact [target]
-    inventory
-    move [direction]
-    bash [target]
-    take [item]
-    drop [item]
-    examine [target]
+    u, use [item] [target]
+    int, interact [target]
+    inv, inventory
+    m, move [direction]
+    b, bash [target]
+    t, take [item]
+    dr, drop [item}
+    exa, examine [target]
+    s, search
+    de, describe [target]
     exit''')
 
 # START PLAYER ACTIONS
@@ -112,7 +124,7 @@ def inventory():
             print('{0}: {1}'.format(item.name, item.description))
     else:
         print('Your inventory is empty.')
-    return 'inventory'
+    return 'inventory', None
 
 
 def move(direction=None):
@@ -162,11 +174,14 @@ def take(item=None):
 
     y, x = actor.get_position()
     for i in world.world_map[y][x].items:
-        if item == i.name and i.obtainable is True:
-            world.world_map[y][x].items.remove(i)
-            actor.inventory.append(i)
-            print('You pick up {0}.'.format(item))
-            return 'take', item
+        if item == i.name:
+            if i.obtainable is True:
+                world.world_map[y][x].items.remove(i)
+                actor.inventory.append(i)
+                print('You pick up {0}.'.format(item))
+                return 'take', item
+            print('You find yourself unable to take {0}.'.format(item))
+            return False
     print("There is no {0}.".format(item))
     return False
 
@@ -206,18 +221,22 @@ def examine(target=None):
 def search():
     y, x = actor.get_position()
     print('You search the area for anything of interest.')
+    found = False
     for item in world.world_map[y][x].items:
+        found = True
         print('You found {0}.'.format(item.name))
-    return 'search'
+    print("You found nothing.") if not found else None
+    return 'search', None
 
 # END PLAYER ACTIONS
 
 
-def describe():
+def describe(previous=None):
     """
     placeholder
     """
     print(chr(27) + '[2J' + chr(27) + '[;H')
+    print(previous + '\n') if previous is not None else None
     y, x = actor.get_position()
     world.world_map[y][x].describe()
 
@@ -238,6 +257,23 @@ def exit_game():
         return False
 
 
+def events(rcode):
+    """
+    placeholder
+    :param rcode:
+    :return:
+    """
+
+    y, x = actor.get_position()
+
+    # Area specific events.
+    if world.world_map[y][x] is world.fs01:
+        Forest01Event.parse(rcode)
+
+    else:
+        Event.parse(rcode)
+
+
 def play():
     """
     placeholder
@@ -253,37 +289,104 @@ def play():
         if rcode == 'exit':
             break
 
-        generic_fail = 'You try but fail, better think of something else.'
-        bash_fail = "You vigorously bash '{0}', but to no effect."
-
-        y, x = actor.get_position()
-        command = rcode[0]
-        # Area specific events.
-        if world.world_map[y][x] is world.fs01:
-            if command == 'use':
-                if rcode[1] == 'axe' and rcode[2] == 'tree':
-                    world.fs01.items.remove(f['fs01_tree'])
-                    world.fs01.unblock_exit('south')
-                    describe()
-                    print('The tree falls, clearing the path south.')
-                else:
-                    print(generic_fail)
-            elif command == 'bash' in rcode:
-                if rcode[1] == 'boulder':
-                    world.fs01.unblock_exit('east')
-                    describe()
-                else:
-                    print(bash_fail.format(rcode[1]))
-            elif command == 'take':
-                if rcode[1] == 'axe':
-                    if f['fs01_axe'] in actor.inventory:
-                        actor.inventory.remove(f['fs01_axe'])
-                        actor.inventory.append(t['axe'])
-
-        else:
-            if command == 'use':
-                print(generic_fail)
-            elif command == 'interact':
-                print(generic_fail)
+        events(rcode)
 
     print('Thank you for playing!')
+
+
+class Event:
+    """
+    placeholder
+    """
+    @classmethod
+    def parse(cls, args):
+        options = {'use': cls.use,
+                   'bash': cls.bash,
+                   'take': cls.take,
+                   'interact': cls.interact,
+                   'inventory': cls.inventory,
+                   'drop': cls.drop,
+                   'examine': cls.examine,
+                   'search': cls.search,
+                   'describe': cls.describe, }
+        options[args[0]](args)
+
+    @staticmethod
+    def use(args):
+        print('You try but fail, better think of something else.')
+
+    @staticmethod
+    def bash(args):
+        print('You vigorously bash {0}, but to no effect.'.format(args[1]))
+
+    @staticmethod
+    def take(args):
+        pass
+
+    @staticmethod
+    def interact(args):
+        pass
+
+    @staticmethod
+    def inventory(args):
+        pass
+
+    @staticmethod
+    def drop(args):
+        pass
+
+    @staticmethod
+    def examine(args):
+        pass
+
+    @staticmethod
+    def search(args):
+        pass
+
+    @staticmethod
+    def describe(args):
+        pass
+
+
+class Forest01Event(Event):
+    """
+
+    """
+    @classmethod
+    def parse(cls, args):
+        options = {'use': cls.use,
+                   'bash': cls.bash,
+                   'take': cls.take,
+                   'interact': cls.interact,
+                   'inventory': cls.inventory,
+                   'drop': cls.drop,
+                   'examine': cls.examine,
+                   'search': cls.search,
+                   'describe': cls.describe, }
+        options[args[0]](args)
+
+    @staticmethod
+    def use(args):
+        if args[1] == 'axe' and args[2] == 'tree':
+            world.fs01.items.remove(f['fs01_tree'])
+            world.fs01.unblock_exit('south')
+            describe('The tree falls, clearing the path south.')
+        else:
+            Event.use(args)
+
+    @staticmethod
+    def bash(args):
+        if args[1] == 'boulder':
+            world.fs01.unblock_exit('east')
+            describe('The boulder breaks into pieces.')
+        else:
+            Event.bash(args)
+
+    @staticmethod
+    def take(args):
+        if args[1] == 'axe':
+            if f['fs01_axe'] in actor.inventory:
+                actor.inventory.remove(f['fs01_axe'])
+                actor.inventory.append(t['axe'])
+        else:
+            Event.take(args)
