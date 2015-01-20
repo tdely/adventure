@@ -33,4 +33,5 @@ def main():
 
 
 if __name__ == '__main__':
+    # Call main() in a manner that will (supposedly) exit gracefully in an interactive prompt
     sys.exit(main())

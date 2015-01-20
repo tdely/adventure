@@ -4,7 +4,9 @@ import world
 
 
 class Player:
-
+    """
+    The 'player character'
+    """
     def __init__(self, position):
         self.y, self.x = position
         self.inventory = []

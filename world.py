@@ -8,7 +8,7 @@ world_map = []
 
 class Direction(Enum):
     """
-    Enum of direction
+    Directions and corresponding coordinate changes
     """
     north = (-1, 0)
     west = (0, -1)
@@ -24,7 +24,7 @@ class Direction(Enum):
 
 class Area:
     """
-    placeholder
+    An area of the playing field
     """
     def __init__(self, item_list, name, blocked, description):
         self.items = item_list if item_list is not None else []

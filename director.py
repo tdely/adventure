@@ -168,6 +168,9 @@ def bash(target=None):
 
 
 def take(item=None):
+    """
+    Pick up an item
+    """
     if item is None:
         print('You grab at the air, looking mighty stupid.')
         return False
@@ -206,6 +209,9 @@ def drop(item=None):
 
 
 def examine(target=None):
+    """
+    Inspect an object
+    """
     if target is None:
         print('Taking a step back and looking at the situation, you find yourself in doubt.')
         return False
@@ -219,6 +225,9 @@ def examine(target=None):
 
 
 def search():
+    """
+    Search area for objects
+    """
     y, x = actor.get_position()
     print('You search the area for anything of interest.')
     found = False
@@ -233,7 +242,7 @@ def search():
 
 def describe(previous=None):
     """
-    placeholder
+    Show area description
     """
     print(chr(27) + '[2J' + chr(27) + '[;H')
     print(previous + '\n') if previous is not None else None
@@ -242,12 +251,15 @@ def describe(previous=None):
 
 
 def enter_area():
+    """
+    Execute 'enter area' procedure
+    """
     describe()
 
 
 def exit_game():
     """
-    placeholder
+    Exit the game
     """
     confirm = input('Are you sure you want to exit the game? (y/n) ').lower()
     if confirm in ('y', 'yes'):
@@ -259,9 +271,7 @@ def exit_game():
 
 def events(rcode):
     """
-    placeholder
-    :param rcode:
-    :return:
+    Call events for correct area
     """
 
     y, x = actor.get_position()
@@ -296,7 +306,7 @@ def play():
 
 class Event:
     """
-    placeholder
+    Default events
     """
     @classmethod
     def parse(cls, args):
@@ -350,21 +360,8 @@ class Event:
 
 class Forest01Event(Event):
     """
-
+    Forest01 events
     """
-    @classmethod
-    def parse(cls, args):
-        options = {'use': cls.use,
-                   'bash': cls.bash,
-                   'take': cls.take,
-                   'interact': cls.interact,
-                   'inventory': cls.inventory,
-                   'drop': cls.drop,
-                   'examine': cls.examine,
-                   'search': cls.search,
-                   'describe': cls.describe, }
-        options[args[0]](args)
-
     @staticmethod
     def use(args):
         if args[1] == 'axe' and args[2] == 'tree':
