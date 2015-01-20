@@ -8,7 +8,6 @@ DEBUG = False
 
 world.initialize_world()
 actor = player.Player(world.start_area)
-# actor.inventory.append(t['axe'])
 
 
 def control():
@@ -77,17 +76,12 @@ def use(item=None, target=None):
     """
     Use an item on an object
     """
-    match = False
     if item is None and target is None:
         print("You reach into your pockets but forgot what you were looking for.")
         return False
-    # Does the player have the item?
-    for i in actor.get_inventory():
-        if item == i.name:
-            match = True
-            break
 
-    if not match:
+    # Does the player have the item?
+    if not actor.has_item(item):
         print("You don't carry '{0}'.".format(item))
         return False
 
@@ -96,9 +90,8 @@ def use(item=None, target=None):
         return False
 
     y, x = actor.get_position()
-    for i in world.world_map[y][x].items:
-        if target == i.name:
-            return 'use', item, target
+    if world.world_map[y][x].has_item(target):
+        return 'use', item, target
 
     print("You try to use '{0}' with '{1}', but can't find '{1}'.".format(item, target))
     return False
@@ -111,7 +104,15 @@ def interact(target=None):
     if target is None:
         print("You can't interact with nothing.")
         return False
-    return 'interact', target
+    y, x = actor.get_position()
+    area = world.world_map[y][x]
+    if area.has_item(target):
+        if area.get_item(target).interactable:
+            return 'interact', target
+        print("You can't seem to figure out how to interact with {0}.".format(target))
+        return False
+    print("There is no {0}.".format(target))
+    return False
 
 
 def inventory():
@@ -154,57 +155,59 @@ def bash(target=None):
         return False
 
     y, x = actor.get_position()
-    for item in world.world_map[y][x].items:
-        if target == item.name:
-            if item.breakable:
-                world.world_map[y][x].items.remove(item)
-                print("You bash '{0}' to dust.".format(target))
-                return 'bash', target
-            else:
-                return 'bash', target
+    area = world.world_map[y][x]
+    if area.has_item(target):
+        item = area.get_item(target)
+        if item.breakable:
+            area.items.remove(item)
+            print("You bash '{0}' to dust.".format(target))
+            return 'bash', target
+        else:
+            return 'bash', target
 
     print("You look for '{0}' intent on breaking it, but can't find it.".format(target))
     return False
 
 
-def take(item=None):
+def take(target=None):
     """
     Pick up an item
     """
-    if item is None:
+    if target is None:
         print('You grab at the air, looking mighty stupid.')
         return False
 
     y, x = actor.get_position()
-    for i in world.world_map[y][x].items:
-        if item == i.name:
-            if i.obtainable is True:
-                world.world_map[y][x].items.remove(i)
-                actor.inventory.append(i)
-                print('You pick up {0}.'.format(item))
-                return 'take', item
-            print('You find yourself unable to take {0}.'.format(item))
-            return False
-    print("There is no {0}.".format(item))
+    area = world.world_map[y][x]
+    if area.has_item(target):
+        item = area.get_item(target)
+        if item.obtainable:
+            area.items.remove(item)
+            actor.inventory.append(item)
+            print('You pick up {0}.'.format(target))
+            return 'take', target
+        print("You can't pick up {0}.".format(target))
+        return False
+    print("There is no {0}.".format(target))
     return False
 
 
-def drop(item=None):
+def drop(target=None):
     """
     Place an item on the ground
     """
-    if item is None:
+    if target is None:
         print('You drop to the ground, feeling confused.')
         return False
 
-    for i in actor.get_inventory():
-        if item == i.name:
-            y, x = actor.get_position()
-            actor.inventory.remove(i)
-            world.world_map[y][x].items.append(i)
-            print('You drop {0} on the ground.'.format(item))
-            return 'drop', 'item'
-    print("You don't have {0}.".format(item))
+    if actor.has_item(target):
+        y, x = actor.get_position()
+        item = actor.get_item(target)
+        actor.inventory.remove(item)
+        world.world_map[y][x].items.append(item)
+        print('You drop {0} on the ground.'.format(target))
+        return 'drop', 'item'
+    print("You don't have {0}.".format(target))
     return False
 
 
@@ -248,6 +251,7 @@ def describe(previous=None):
     print(previous + '\n') if previous is not None else None
     y, x = actor.get_position()
     world.world_map[y][x].describe()
+    return 'describe', None
 
 
 def enter_area():

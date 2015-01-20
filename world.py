@@ -40,7 +40,6 @@ class Area:
     def describe(self):
         """
         Describe the area
-        :rtype : bool
         """
         print(self.description)
         for item in self.items:
@@ -53,20 +52,42 @@ class Area:
     def get_position(self):
         """
         Get area position in world_map
-        :rtype : list
+        :return: y and x coordinate
         """
         y = 0
         for row in world_map:
             try:
-                return [y, row.index(self)]
+                return y, row.index(self)
             except ValueError:
                 y += 1
         raise Exception('Area not in world_map')
 
+    def has_item(self, target):
+        """
+        Check if item is in area
+        :param target: item
+        :return: True on success, else False
+        """
+        for item in self.items:
+            if target == item.name:
+                return True
+        return False
+
+    def get_item(self, target):
+        """
+        Get an item from area
+        :param target: item
+        :return: item on success, else False
+        """
+        for item in self.items:
+            if target == item.name:
+                return item
+        return False
+
     def save_position(self):
         """
         Save area position in world_map internally as coordinates
-        :rtype : bool
+        :return: True on success, else False
         """
         try:
             self.y, self.x = self.get_position()
@@ -77,7 +98,7 @@ class Area:
     def exit_available(self, direction):
         """
         Check if an exit is available
-        :rtype : bool
+        :return : True on success, else False
         """
         adj_y, adj_x = Direction[direction].value
         adj_y += self.y
@@ -93,7 +114,7 @@ class Area:
     def unblock_exit(self, direction):
         """
         Unblock an exit.
-        :rtype : bool
+        :return: True on success, else False
         """
         if self.blocked is not None:
             if direction in self.blocked:
@@ -122,7 +143,7 @@ class Area:
     def block_exit(self, direction):
         """
         Block an exit.
-        :rtype : bool
+        :return : True on success, else False
         """
         if direction not in self.blocked:
             self.blocked.append(direction)
@@ -151,7 +172,6 @@ class Area:
 def initialize_world() -> object:
     """
     Initialize the world.
-    :rtype : None
     """
     for row in world_map:
         for tile in row:
