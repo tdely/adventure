@@ -160,7 +160,7 @@ def bash(target=None):
         item = area.get_item(target)
         if item.breakable:
             area.items.remove(item)
-            print("You bash '{0}' to dust.".format(target))
+            print("You bash '{0}'.".format(target))
             return 'bash', target
         else:
             return 'bash', target
@@ -331,7 +331,10 @@ class Event:
 
     @staticmethod
     def bash(args):
-        print('You vigorously bash {0}, but to no effect.'.format(args[1]))
+        y, x = actor.get_position()
+        area = world.world_map[y][x]
+        if area.get_item(args[1]).breakable is False:
+            print('You vigorously bash {0}, but to no effect.'.format(args[1]))
 
     @staticmethod
     def take(args):
