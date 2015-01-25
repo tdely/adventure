@@ -21,6 +21,7 @@ def control():
     command = arguments.pop(0)
 
     options = {'help': show_help,
+               'h': show_help,
                'use': use,
                'u': use,
                'interact': interact,
@@ -69,6 +70,7 @@ def show_help():
     s, search
     de, describe [target]
     exit''')
+    return True
 
 # START PLAYER ACTIONS
 
@@ -466,7 +468,7 @@ class Mountain03Event(Event):
     @staticmethod
     def use(args):
         if args[1] == 'ruby' and args[2] == 'altar':
-            actor.items.remove(t['ruby'])
+            actor.inventory.remove(t['ruby'])
             world.mt03.items.append(f['cv03_ruby'])
             describe('You place the ruby upon the altar.')
         elif args[1] == 'hammer' and args[2] == 'ruby':
