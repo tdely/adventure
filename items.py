@@ -38,20 +38,39 @@ class Trinket(Item):
         super().__init__(name, description, detail, breakable=False, obtainable=True, interactable=False)
 
 
-furniture_list = {'fs01_boulder': Furniture('boulder', 'A boulder blocks the path east.',
-                                            'The boulder looks cracked and brittle.',
-                                            breakable=True, interactable=False, obtainable=False),
-                  'fs01_tree': Furniture('tree', 'A medium sized tree blocks the path south.',
-                                         'A perfect tree for woodcutting practice if there ever was one.',
-                                         breakable=False, interactable=False, obtainable=False),
-                  'fs01_axe': Furniture('axe', 'An old woodcutters axe sits buried in a tree stump.',
+furniture_list = {'fs01_axe': Furniture('axe', 'An old woodcutters axe sits buried in a tree stump.',
                                         "The axe looks like it's been left here for a long time.",
                                         breakable=False, interactable=False, obtainable=True),
-                  'fs01_npc01': Furniture('man', 'A npc.',
-                                          "Detailed description.",
-                                          breakable=False, interactable=True, obtainable=False), }
+                  'fs01_boulder': Furniture('boulder', 'A boulder blocks the path east.',
+                                            'The boulder looks cracked and brittle.',
+                                            breakable=True, interactable=False, obtainable=False),
+                  'fs02_door': Furniture('door', 'A sturdy door blocks the entrance to the cave.',
+                                         'The door appears locked. The wood is old and dry, although still solid.',
+                                         breakable=False, interactable=False, obtainable=False),
+                  'cv05_chest': Furniture('chest', 'In the corner stands an old dusty chest.',
+                                          'It is locked, but appears to have been weakened by prolonged exposure to '
+                                          'the humid air.',
+                                          breakable=True, interactable=False, obtainable=True),
+                  'cv05_hammer': Furniture('hammer', 'An ornate hammer lies among the rubble of the broken chest.',
+                                           'A hammer that appears to be of religious or spiritual origin.',
+                                           breakable=False, interactable=False, obtainable=True),
+                  'fs03_tree': Furniture('tree', 'A medium sized tree stands near the stream.',
+                                         'A perfect tree for woodcutting practice if there ever was one.',
+                                         breakable=False, interactable=False, obtainable=False),
+                  'fs03_man': Furniture('man', 'An npc.',
+                                        'Detailed description.',
+                                        breakable=False, interactable=True, obtainable=False),
+                  'mt03_altar': Furniture('altar', 'An altar of stone, cut from the mountain, stands before you.',
+                                          "There appears.",
+                                          breakable=False, interactable=False, obtainable=False),
+                  'mt03_ruby': Furniture('ruby', 'The ruby lies upon the altar, it seems different than earlier.',
+                                         'Out of the corner of your eyes the gemstone appears to occasionally move or '
+                                         'somehow change.',
+                                         breakable=False, interactable=False, obtainable=False), }
 
 trinket_list = {'axe': Trinket('axe', 'A worn and rusted woodcutters axe.',
-                               'It looks abandoned, you feel a sting of guilt.'),
+                               'An axe used for cutting down trees.'),
                 'ruby': Trinket('ruby', 'A precious red gem.',
-                                'Greed is good.'), }
+                                'Who would be stupid enough to leave such wealth laying about?'),
+                'hammer': Trinket('hammer', 'A ceremonial hammer.',
+                                  'A hammer that appears to be of religious or spiritual origin.'), }

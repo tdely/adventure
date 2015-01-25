@@ -251,6 +251,7 @@ def describe(previous=None):
     print(chr(27) + '[2J' + chr(27) + '[;H')
     print(previous + '\n') if previous is not None else None
     y, x = actor.get_position()
+    print(world.world_map[y][x].name) if DEBUG else None
     world.world_map[y][x].describe()
     return 'describe', None
 
@@ -284,7 +285,14 @@ def events(rcode):
     # Area specific events.
     if world.world_map[y][x] is world.fs01:
         Forest01Event.parse(rcode)
-
+    elif world.world_map[y][x] is world.fs02:
+        Forest02Event.parse(rcode)
+    elif world.world_map[y][x] is world.fs03:
+        Forest03Event.parse(rcode)
+    elif world.world_map[y][x] is world.cv05:
+        Cave05Event.parse(rcode)
+    elif world.world_map[y][x] is world.mt03:
+        Mountain03Event.parse(rcode)
     else:
         Event.parse(rcode)
 
@@ -371,23 +379,6 @@ class Forest01Event(Event):
     Forest01 events
     """
     @staticmethod
-    def use(args):
-        if args[1] == 'axe' and args[2] == 'tree':
-            world.fs01.items.remove(f['fs01_tree'])
-            world.fs01.unblock_exit('south')
-            describe('The tree falls, clearing the path south.')
-        else:
-            Event.use(args)
-
-    @staticmethod
-    def bash(args):
-        if args[1] == 'boulder':
-            world.fs01.unblock_exit('east')
-            describe('The boulder breaks into pieces.')
-        else:
-            Event.bash(args)
-
-    @staticmethod
     def take(args):
         if args[1] == 'axe':
             if f['fs01_axe'] in actor.inventory:
@@ -395,6 +386,34 @@ class Forest01Event(Event):
                 actor.inventory.append(t['axe'])
         else:
             Event.take(args)
+
+
+class Forest02Event(Event):
+    """
+    Forest02 events
+    """
+    @staticmethod
+    def use(args):
+        if args[1] == 'axe' and args[2] == 'door':
+            world.fs02.items.remove(f['fs02_door'])
+            world.fs02.unblock_exit('east')
+            describe('The door breaks, allowing access to the cave.')
+        else:
+            Event.use(args)
+
+
+class Forest03Event(Event):
+    """
+    Forest03 events
+    """
+    @staticmethod
+    def use(args):
+        if args[1] == 'axe' and args[2] == 'tree':
+            world.fs03.items.remove(f['fs03_tree'])
+            world.fs03.unblock_exit('south')
+            describe('The tree falls over the stream, providing a path across.')
+        else:
+            Event.use(args)
 
     @staticmethod
     def interact(args):
@@ -416,3 +435,42 @@ class Forest01Event(Event):
                     print('Not quite.')
         else:
             Event.interact(args)
+
+
+class Cave05Event(Event):
+    """
+    Cave05 events
+    """
+    @staticmethod
+    def bash(args):
+        if args[1] == 'chest':
+            world.cv05.items.append(f['cv05_hammer'])
+            describe('The chest breaks under the barrage of your mighty fist.')
+        else:
+            Event.bash(args)
+
+    @staticmethod
+    def take(args):
+        if args[1] == 'hammer':
+            if f['cv05_hammer'] in actor.inventory:
+                actor.inventory.remove(f['cv05_hammer'])
+                actor.inventory.append(t['hammer'])
+        else:
+            Event.take(args)
+
+
+class Mountain03Event(Event):
+    """
+    Mountain03 events
+    """
+    @staticmethod
+    def use(args):
+        if args[1] == 'ruby' and args[2] == 'altar':
+            actor.items.remove(t['ruby'])
+            world.mt03.items.append(f['cv03_ruby'])
+            describe('You place the ruby upon the altar.')
+        elif args[1] == 'hammer' and args[2] == 'ruby':
+            world.mt03.items.remove(f['cv03_ruby'])
+            describe('Placeholder.')
+        else:
+            Event.use(args)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
-from items import furniture_list as i
+from items import furniture_list as f
 from enum import Enum
 
 world_map = []
@@ -128,12 +128,16 @@ class Area:
                         if world_map[adj_y][adj_x] is not None:
                             self.blocked.remove(direction)
                             # Remove block on adjacent area
-                            inv_y, inv_x = Direction[direction].value
-                            inv_y *= -1
-                            inv_x *= -1
-                            inv_direction = Direction.tostring((inv_y, inv_x))
-                            world_map[adj_y][adj_x].blocked.remove(inv_direction)
-                            return True
+                            try:
+                                inv_y, inv_x = Direction[direction].value
+                                inv_y *= -1
+                                inv_x *= -1
+                                inv_direction = Direction.tostring((inv_y, inv_x))
+                                world_map[adj_y][adj_x].blocked.remove(inv_direction)
+                                return True
+                            except ValueError:
+                                # The other area is missing a block, not good but not fatal
+                                return True
                     except IndexError:
                         return False
                 return False
@@ -186,21 +190,48 @@ def initialize_world() -> object:
                         tile.block_exit(direction)
 
 # Forest
-fs01 = Area([i['fs01_boulder'], i['fs01_tree'], i['fs01_axe'], i['fs01_npc01']], 'forest01', ['south', 'east'], 'F0.0')
-fs02 = Area(None, 'forest02', ['west'], 'F0.1')
-fs03 = Area(None, 'forest03', ['north'], 'F1.0')
-fs04 = Area(None, 'forest04', None, 'F1.1')
-fs05 = Area(None, 'forest05', None, 'F1.2')
-fs06 = Area(None, 'forest06', None, 'F2.0')
-fs07 = Area(None, 'forest07', None, 'F2.1')
-fs08 = Area(None, 'forest08', None, 'F2.2')
-fs09 = Area(None, 'forest09', None, 'F3.0')
-fs10 = Area(None, 'forest10', None, 'F3.1')
-fs11 = Area(None, 'forest11', None, 'F3.2')
+fs01 = Area([f['fs01_axe']], 'forest01', None,
+            'fs01')
+fs02 = Area([f['fs02_door']], 'forest02', ['south', 'east'],
+            'A cave lies to the east.')
+fs03 = Area([f['fs03_man'], f['fs03_tree']], 'forest03', ['east', 'south'],
+            'A stream blocks the path south. Remains of a bridge lie on both sides of the stream, but there is no way '
+            'across anymore.')
+fs04 = Area(None, 'forest04', ['west', 'north'],
+            'fs04')
+fs05 = Area(None, 'forest05', ['north'],
+            'A stream lies to the north, a newly felled tree acting as a bridge. A pond blocks any attempt at heading '
+            'south.')
+fs06 = Area(None, 'forest06', ['east'],
+            'fs06')
+fs07 = Area(None, 'forest07', None,
+            'A pond blocks any attempt at heading west.')
+fs08 = Area(None, 'forest08', ['east'],
+            'fs08')
+cv01 = Area(None, 'cave01', ['west'],
+            'It is a damp cave, the only light coming from the west doorway, facing the forest.')
+cv02 = Area(None, 'cave02', None,
+            'It is a damp cave, the only light is coming from the west.')
+cv03 = Area(None, 'cave03', ['south'],
+            'It is a dark and damp cave, there is little light escaping this far in.')
+cv04 = Area(None, 'cave04', ['south'],
+            'It is a dark and damp cave, there is little light escaping this far in.')
+cv05 = Area([f['cv05_chest']], 'cave05', ['north', 'south'],
+            'It is a dark and damp cave, it is nearly pitch black.')
+mt01 = Area(None, 'mountain01', ['west'],
+            'mt01')
+mt02 = Area(None, 'mountain02', ['east', 'north'],
+            'mt02')
+mt03 = Area(f['mt03_altar'], 'mountain03', ['west', 'north'],
+            'mt03')
+mt04 = Area(None, 'mountain04', ['west'],
+            'mt04')
+mt05 = Area(None, 'mountain05', None,
+            'mt04')
 
 start_area = (0, 0)
 
-world_map = [[fs01, fs02, None],
-             [fs03, fs04, fs05],
-             [fs06, fs07, fs08],
-             [fs09, fs10, fs11], ]
+world_map = [[fs01, fs02, cv01, cv02, cv03],
+             [fs03, fs04, None, cv04, cv05],
+             [fs05, fs06, mt01, mt02, mt03],
+             [None, fs07, fs08, mt04, mt05], ]
