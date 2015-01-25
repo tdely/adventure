@@ -186,7 +186,7 @@ def initialize_world() -> object:
                         tile.block_exit(direction)
 
 # Forest
-fs01 = Area([i['fs01_boulder'], i['fs01_tree'], i['fs01_axe']], 'forest01', ['south', 'east'], 'F0.0')
+fs01 = Area([i['fs01_boulder'], i['fs01_tree'], i['fs01_axe'], i['fs01_npc01']], 'forest01', ['south', 'east'], 'F0.0')
 fs02 = Area(None, 'forest02', ['west'], 'F0.1')
 fs03 = Area(None, 'forest03', ['north'], 'F1.0')
 fs04 = Area(None, 'forest04', None, 'F1.1')

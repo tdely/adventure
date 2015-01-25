@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-§
 import player
 import world
+from quests import quest_list
 from items import trinket_list as t, furniture_list as f
 
 DEBUG = False
@@ -394,3 +395,24 @@ class Forest01Event(Event):
                 actor.inventory.append(t['axe'])
         else:
             Event.take(args)
+
+    @staticmethod
+    def interact(args):
+        if args[1] == 'man':
+            quest = quest_list['a woodland riddle']
+            if quest.stage == 2:
+                print('Well met.')
+            if quest.stage == 0:
+                quest.describe()
+                quest.accept()
+            if quest.stage == 1:
+                quest.describe()
+                answer = input('What is your answer?')
+                if answer == 'something':
+                    quest.complete()
+                    quest.describe()
+                    actor.inventory.append(t['ruby'])
+                else:
+                    print('Not quite.')
+        else:
+            Event.interact(args)

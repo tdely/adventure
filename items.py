@@ -46,7 +46,10 @@ furniture_list = {'fs01_boulder': Furniture('boulder', 'A boulder blocks the pat
                                          breakable=False, interactable=False, obtainable=False),
                   'fs01_axe': Furniture('axe', 'An old woodcutters axe sits buried in a tree stump.',
                                         "The axe looks like it's been left here for a long time.",
-                                        breakable=False, interactable=False, obtainable=True), }
+                                        breakable=False, interactable=False, obtainable=True),
+                  'fs01_npc01': Furniture('man', 'A npc.',
+                                          "Detailed description.",
+                                          breakable=False, interactable=True, obtainable=False), }
 
 trinket_list = {'axe': Trinket('axe', 'A worn and rusted woodcutters axe.',
                                'It looks abandoned, you feel a sting of guilt.'),
