@@ -24,8 +24,12 @@ def main():
     args = parser.parse_args()
 
     if args.cheat:
-        # TODO: write a 'walkthrough' after game is finished
-        print('Walkthrough.')
+        print('Walkthrough: take axe, move east, use axe door, move east, move east, move south, move east, bash chest,'
+              'take hammer, move west, move north, move west, move west, move west, move south, interact man, e'
+              ', use axe tree move south move east, move north, search, take pot, move south, move south, move east, '
+              'move north, move east, move south, move east, move north, use ruby altar, use hammer ruby, use pot ashes'
+              ', move south, move west, move north, move west, move south, move west, move north, move west, move north'
+              ', interact man, y.')
         return
 
     director.play()
