@@ -240,8 +240,7 @@ def search():
     for item in world.world_map[y][x].items:
         found = True
         print('You found {0}.'.format(item.name))
-    print("You found nothing.") if not found else None
-    return 'search', None
+    return 'search', found
 
 # END PLAYER ACTIONS
 
@@ -291,6 +290,8 @@ def events(rcode):
         Forest02Event.parse(rcode)
     elif world.world_map[y][x] is world.fs03:
         Forest03Event.parse(rcode)
+    elif world.world_map[y][x] is world.fs04:
+        Forest04Event.parse(rcode)
     elif world.world_map[y][x] is world.cv05:
         Cave05Event.parse(rcode)
     elif world.world_map[y][x] is world.mt03:
@@ -305,6 +306,10 @@ def play():
     """
     enter_area()
     while True:
+        if quest_list['blood and ashes'].stage == 2:
+            print('You completed the game.')
+            break
+
         rcode = control()
 
         print(rcode) if DEBUG else None
@@ -369,7 +374,7 @@ class Event:
 
     @staticmethod
     def search(args):
-        pass
+        print("You found nothing.") if not args[1] else None
 
     @staticmethod
     def describe(args):
@@ -413,6 +418,8 @@ class Forest03Event(Event):
         if args[1] == 'axe' and args[2] == 'tree':
             world.fs03.items.remove(f['fs03_tree'])
             world.fs03.unblock_exit('south')
+            world.fs03.description = 'A stream blocks the path south. Remains of a bridge lie on both sides of the ' \
+                                     'stream. A newly felled tree bridges the stream.'
             describe('The tree falls over the stream, providing a path across.')
         else:
             Event.use(args)
@@ -420,23 +427,61 @@ class Forest03Event(Event):
     @staticmethod
     def interact(args):
         if args[1] == 'man':
-            quest = quest_list['a woodland riddle']
-            if quest.stage == 2:
-                print('Well met.')
-            if quest.stage == 0:
-                quest.describe()
-                quest.accept()
-            if quest.stage == 1:
-                quest.describe()
-                answer = input('What is your answer?')
-                if answer == 'something':
-                    quest.complete()
-                    quest.describe()
+            riddle = quest_list['a woodland riddle']
+            secret = quest_list['blood and ashes']
+            if riddle.stage == 2:
+                if secret.stage == 1:
+                    if secret.validate_required_items(actor.get_inventory()):
+                        answer = input('Trade you that urn of ashes for this here violin, Johnny boy. (y/n)')
+                        if answer == 'y':
+                            secret.complete(actor.get_inventory())
+                            actor.inventory.remove(t['ashes'])
+                            secret.describe()
+                    else:
+                        secret.describe()
+                else:
+                    print('Well met.')
+            if riddle.stage == 0:
+                riddle.describe()
+                riddle.accept()
+            if riddle.stage == 1:
+                riddle.describe()
+                answer = input('Speak: ').lower()
+                if answer == 'e' or answer == 'the letter e':
+                    riddle.complete(actor.get_inventory())
+                    riddle.describe()
                     actor.inventory.append(t['ruby'])
                 else:
                     print('Not quite.')
         else:
             Event.interact(args)
+
+
+class Forest04Event(Event):
+    """
+    Forest04 events
+    """
+    @staticmethod
+    def search(args):
+        secret = quest_list['blood and ashes']
+        if secret.stage == 0:
+            world.fs04.items.append(f['fs04_pot'])
+            secret.accept()
+            print('You found pot.')
+        else:
+            Event.search(args)
+
+
+class Cave03Event(Event):
+    """
+    Cave03 events
+    """
+    @staticmethod
+    def bash(args):
+        if args[1] == 'barrel':
+            describe('The barrel falls apart as your fist crashes through the brittle wood.')
+        else:
+            Event.bash(args)
 
 
 class Cave05Event(Event):
@@ -469,10 +514,16 @@ class Mountain03Event(Event):
     def use(args):
         if args[1] == 'ruby' and args[2] == 'altar':
             actor.inventory.remove(t['ruby'])
-            world.mt03.items.append(f['cv03_ruby'])
+            world.mt03.items.append(f['mt03_ruby'])
             describe('You place the ruby upon the altar.')
         elif args[1] == 'hammer' and args[2] == 'ruby':
-            world.mt03.items.remove(f['cv03_ruby'])
-            describe('Placeholder.')
+            world.mt03.items.remove(f['mt03_ruby'])
+            world.mt03.items.append(f['mt03_ashes'])
+            describe('You bring down the hammer, smashing the gem. A brilliant flash accompanied by a screech emanates '
+                     'from the stone.')
+        elif args[1] == 'pot' and args[2] == 'ashes':
+            world.mt03.items.remove(f['mt03_ashes'])
+            actor.inventory.append(t['ashes'])
+            describe('You scoop the ashes from the altar into the pot.')
         else:
             Event.use(args)

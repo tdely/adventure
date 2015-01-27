@@ -173,7 +173,7 @@ class Area:
         return True
 
 
-def initialize_world() -> object:
+def initialize_world():
     """
     Initialize the world.
     """
@@ -191,43 +191,47 @@ def initialize_world() -> object:
 
 # Forest
 fs01 = Area([f['fs01_axe']], 'forest01', None,
-            'fs01')
+            'A clearing in the forest, created by logging some time ago if the old tree stumps are anything to go by.')
 fs02 = Area([f['fs02_door']], 'forest02', ['south', 'east'],
-            'A cave lies to the east.')
+            'A clearing lies to the west, and a cave lies to the east.')
 fs03 = Area([f['fs03_man'], f['fs03_tree']], 'forest03', ['east', 'south'],
-            'A stream blocks the path south. Remains of a bridge lie on both sides of the stream, but there is no way '
-            'across anymore.')
+            "A stream blocks the path south. Remains of a bridge lie on both sides of the stream, but there's no "
+            'longer a way across.')
 fs04 = Area(None, 'forest04', ['west', 'north'],
-            'fs04')
+            'The forest is thick as the path ends. A bridge of dubious sturdiness lies across the stream south. The '
+            'stream ends in a fall into a chasm to the east.')
 fs05 = Area(None, 'forest05', ['north'],
-            'A stream lies to the north, a newly felled tree acting as a bridge. A pond blocks any attempt at heading '
-            'south.')
+            'A stream lies to the north, a newly felled tree acting as a bridge. A stagnant pond lies south, better not'
+            ' get too close..')
 fs06 = Area(None, 'forest06', ['east'],
-            'fs06')
+            'The path comes to a crossroads in the thick forest. To the north lies an old bridge across the stream, to '
+            'the west the mountain, impassable from here.')
 fs07 = Area(None, 'forest07', None,
-            'A pond blocks any attempt at heading west.')
+            'A few rays of sunlight penetrate the forest canopy. A stagnant pond lies west, better not get too close.')
 fs08 = Area(None, 'forest08', ['east'],
-            'fs08')
+            'The forest ends with the mountain which lies ahead, impassable except for the path to the north.')
 cv01 = Area(None, 'cave01', ['west'],
             'It is a damp cave, the only light coming from the west doorway, facing the forest.')
 cv02 = Area(None, 'cave02', None,
             'It is a damp cave, the only light is coming from the west.')
-cv03 = Area(None, 'cave03', ['south'],
+cv03 = Area([f['cv03_barrel']], 'cave03', ['south'],
             'It is a dark and damp cave, there is little light escaping this far in.')
 cv04 = Area(None, 'cave04', ['south'],
             'It is a dark and damp cave, there is little light escaping this far in.')
 cv05 = Area([f['cv05_chest']], 'cave05', ['north', 'south'],
             'It is a dark and damp cave, it is nearly pitch black.')
 mt01 = Area(None, 'mountain01', ['west'],
-            'mt01')
+            'Where the forest ends, a mountain path with high walls begin. There are strange markings on the rock. A '
+            'chasm lies to the north.')
 mt02 = Area(None, 'mountain02', ['east', 'north'],
-            'mt02')
-mt03 = Area(f['mt03_altar'], 'mountain03', ['west', 'north'],
-            'mt03')
+            'The winding mountain path continues, strange markings scattered across the the rock walls.')
+mt03 = Area([f['mt03_altar']], 'mountain03', ['west', 'north'],
+            'The mountain path ends in a larger open area, the strange markings from the path cover the walls.')
 mt04 = Area(None, 'mountain04', ['west'],
-            'mt04')
+            'The winding mountain path continues, strange markings scattered across the the rock walls.')
 mt05 = Area(None, 'mountain05', None,
-            'mt04')
+            'The winding mountain path continues, strange markings scattered across the the rock walls. You can make '
+            'out an larger opening to the north.')
 
 start_area = (0, 0)
 
