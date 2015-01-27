@@ -20,7 +20,7 @@ def main():
                         dest='cheat',
                         help='show a walkthrough of the game')
     parser.add_argument('-v', '--version', action='version',
-                        version='%(prog)s 0.5')
+                        version='%(prog)s 1.0')
     args = parser.parse_args()
 
     if args.cheat:
