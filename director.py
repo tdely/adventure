@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- encoding: utf-8 -*-§
+# -*- encoding: utf-8 -*-
 import player
 import world
 from quests import quest_list
@@ -282,19 +282,20 @@ def events(rcode):
     """
 
     y, x = actor.get_position()
+    current_area = world.world_map[y][x]
 
     # Area specific events.
-    if world.world_map[y][x] is world.fs01:
+    if current_area is world.fs01:
         Forest01Event.parse(rcode)
-    elif world.world_map[y][x] is world.fs02:
+    elif current_area is world.fs02:
         Forest02Event.parse(rcode)
-    elif world.world_map[y][x] is world.fs03:
+    elif current_area is world.fs03:
         Forest03Event.parse(rcode)
-    elif world.world_map[y][x] is world.fs04:
+    elif current_area is world.fs04:
         Forest04Event.parse(rcode)
-    elif world.world_map[y][x] is world.cv05:
+    elif current_area is world.cv05:
         Cave05Event.parse(rcode)
-    elif world.world_map[y][x] is world.mt03:
+    elif current_area is world.mt03:
         Mountain03Event.parse(rcode)
     else:
         Event.parse(rcode)
