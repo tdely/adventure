@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
+"""
+Quests
+"""
 from items import trinket_list as t
 
 

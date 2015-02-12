@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
+"""
+The main file.
+Commands and events
+"""
 import player
 import world
 from quests import quest_list
@@ -280,7 +284,6 @@ def events(rcode):
     """
     Call events for correct area
     """
-
     y, x = actor.get_position()
     current_area = world.world_map[y][x]
 
@@ -303,7 +306,7 @@ def events(rcode):
 
 def play():
     """
-    placeholder
+    Play the game
     """
     enter_area()
     while True:
@@ -331,6 +334,9 @@ class Event:
     """
     @classmethod
     def parse(cls, args):
+        """
+        Pick event to trigger
+        """
         options = {'use': cls.use,
                    'bash': cls.bash,
                    'take': cls.take,
@@ -344,10 +350,16 @@ class Event:
 
     @staticmethod
     def use(args):
+        """
+        Default on use
+        """
         print('You try but fail, better think of something else.')
 
     @staticmethod
     def bash(args):
+        """
+        Default on bash
+        """
         y, x = actor.get_position()
         area = world.world_map[y][x]
         if area.get_item(args[1]).breakable is False:
@@ -355,30 +367,51 @@ class Event:
 
     @staticmethod
     def take(args):
+        """
+        Default on take
+        """
         pass
 
     @staticmethod
     def interact(args):
+        """
+        Default on interact
+        """
         pass
 
     @staticmethod
     def inventory(args):
+        """
+        Default on inventory
+        """
         pass
 
     @staticmethod
     def drop(args):
+        """
+        Default on drop
+        """
         pass
 
     @staticmethod
     def examine(args):
+        """
+        Default on examine
+        """
         pass
 
     @staticmethod
     def search(args):
+        """
+        Default on search
+        """
         print("You found nothing.") if not args[1] else None
 
     @staticmethod
     def describe(args):
+        """
+        Default on describe
+        """
         pass
 
 
@@ -388,6 +421,9 @@ class Forest01Event(Event):
     """
     @staticmethod
     def take(args):
+        """
+        On take
+        """
         if args[1] == 'axe':
             if f['fs01_axe'] in actor.inventory:
                 actor.inventory.remove(f['fs01_axe'])
@@ -402,6 +438,9 @@ class Forest02Event(Event):
     """
     @staticmethod
     def use(args):
+        """
+        On use
+        """
         if args[1] == 'axe' and args[2] == 'door':
             world.fs02.items.remove(f['fs02_door'])
             world.fs02.unblock_exit('east')
@@ -416,6 +455,9 @@ class Forest03Event(Event):
     """
     @staticmethod
     def use(args):
+        """
+        On use
+        """
         if args[1] == 'axe' and args[2] == 'tree':
             world.fs03.items.remove(f['fs03_tree'])
             world.fs03.unblock_exit('south')
@@ -427,6 +469,9 @@ class Forest03Event(Event):
 
     @staticmethod
     def interact(args):
+        """
+        On interact
+        """
         if args[1] == 'man':
             riddle = quest_list['a woodland riddle']
             secret = quest_list['blood and ashes']
@@ -464,6 +509,9 @@ class Forest04Event(Event):
     """
     @staticmethod
     def search(args):
+        """
+        On search
+        """
         secret = quest_list['blood and ashes']
         if secret.stage == 0:
             world.fs04.items.append(f['fs04_pot'])
@@ -491,6 +539,9 @@ class Cave05Event(Event):
     """
     @staticmethod
     def bash(args):
+        """
+        On bash
+        """
         if args[1] == 'chest':
             world.cv05.items.append(f['cv05_hammer'])
             describe('The chest breaks under the barrage of your mighty fist.')
@@ -499,6 +550,9 @@ class Cave05Event(Event):
 
     @staticmethod
     def take(args):
+        """
+        On take
+        """
         if args[1] == 'hammer':
             if f['cv05_hammer'] in actor.inventory:
                 actor.inventory.remove(f['cv05_hammer'])
@@ -513,6 +567,9 @@ class Mountain03Event(Event):
     """
     @staticmethod
     def use(args):
+        """
+        On use
+        """
         if args[1] == 'ruby' and args[2] == 'altar':
             actor.inventory.remove(t['ruby'])
             world.mt03.items.append(f['mt03_ruby'])

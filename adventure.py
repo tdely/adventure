@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
+"""
+Adventure
+"""
 import sys
 import argparse
 import textwrap
@@ -11,9 +14,9 @@ def main():
     Main
     """
     parser = argparse.ArgumentParser(
-            prog='Adventure',
-            formatter_class=argparse.RawDescriptionHelpFormatter,
-            description=textwrap.dedent('''\
+        prog='Adventure',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent('''\
                 %(prog)s is a game.
                 '''))
     parser.add_argument('-c', '--cheat', action='store_true',

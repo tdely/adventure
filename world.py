@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
+"""
+The world
+"""
 from items import furniture_list as f
 from enum import Enum
 
@@ -17,6 +20,9 @@ class Direction(Enum):
 
     @classmethod
     def tostring(cls, val):
+        """
+        Get name from value
+        """
         for entry in cls:
             if val == entry.value:
                 return entry.name
