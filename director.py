@@ -114,10 +114,7 @@ def interact(target=None):
     y, x = actor.get_position()
     area = world.world_map[y][x]
     if area.has_item(target):
-        if area.get_item(target).interactable:
-            return 'interact', target
-        print("You can't seem to figure out how to interact with {0}.".format(target))
-        return False
+        return 'interact', target
     print("There is no {0}.".format(target))
     return False
 
@@ -164,12 +161,6 @@ def bash(target=None):
     y, x = actor.get_position()
     area = world.world_map[y][x]
     if area.has_item(target):
-        item = area.get_item(target)
-        if item.breakable:
-            area.items.remove(item)
-            print("You bash '{0}'.".format(target))
-            return 'bash', target
-        else:
             return 'bash', target
 
     print("You look for '{0}' intent on breaking it, but can't find it.".format(target))
@@ -296,6 +287,8 @@ def events(rcode):
         Forest03Event.parse(rcode)
     elif current_area is world.fs04:
         Forest04Event.parse(rcode)
+    elif current_area is world.cv03:
+        Cave03Event.parse(rcode)
     elif current_area is world.cv05:
         Cave05Event.parse(rcode)
     elif current_area is world.mt03:
@@ -362,7 +355,11 @@ class Event:
         """
         y, x = actor.get_position()
         area = world.world_map[y][x]
-        if area.get_item(args[1]).breakable is False:
+        item = area.get_item(args[1])
+        if item.breakable:
+            area.items.remove(item)
+            print("You bash '{0}' to dust.".format(args[1]))
+        else:
             print('You vigorously bash {0}, but to no effect.'.format(args[1]))
 
     @staticmethod
@@ -377,7 +374,7 @@ class Event:
         """
         Default on interact
         """
-        pass
+        print("You can't seem to figure out how to interact with {0}.".format(args[1]))
 
     @staticmethod
     def inventory(args):
@@ -528,6 +525,7 @@ class Cave03Event(Event):
     @staticmethod
     def bash(args):
         if args[1] == 'barrel':
+            world.cv03.items.remove(f['cv03_barrel'])
             describe('The barrel falls apart as your fist crashes through the brittle wood.')
         else:
             Event.bash(args)
@@ -543,6 +541,7 @@ class Cave05Event(Event):
         On bash
         """
         if args[1] == 'chest':
+            world.cv05.items.remove(f['cv05_chest'])
             world.cv05.items.append(f['cv05_hammer'])
             describe('The chest breaks under the barrage of your mighty fist.')
         else:
