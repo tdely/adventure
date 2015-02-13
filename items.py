@@ -18,9 +18,9 @@ class Item:
         self.obtainable = obtainable
 
     def __str__(self):
-        return 'Item::name={0}, description={1}, breakable={2}, interactable={3}'.format(self.name,
-                                                                                         self.description,
-                                                                                         self.breakable)
+        return 'Item::name={0}, description={1}, breakable={2}'.format(self.name,
+                                                                       self.description,
+                                                                       self.breakable)
 
 
 class Furniture(Item):
