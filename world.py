@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
-# -*- encoding: utf-8 -*-
 """
 The world
 """
 from items import furniture_list as f
 from enum import Enum
-
-world_map = []
 
 
 class Direction(Enum):
@@ -35,6 +32,7 @@ class Area:
     def __init__(self, item_list, name, blocked, description):
         self.items = item_list if item_list is not None else []
         self.name = name
+        self.world = None
         self.x = None
         self.y = None
         self.blocked = blocked if blocked is not None else []
@@ -55,18 +53,18 @@ class Area:
             if direction not in self.blocked:
                 print('There is an exit {0}.'.format(direction))
 
-    def get_position(self):
+    def get_position(self, board):
         """
         Get area position in world_map
         :return: y and x coordinate
         """
         y = 0
-        for row in world_map:
+        for row in board:
             try:
                 return y, row.index(self)
             except ValueError:
                 y += 1
-        raise Exception('Area not in world_map')
+        raise Exception('Area not in world map')
 
     def has_item(self, target):
         """
@@ -90,13 +88,14 @@ class Area:
                 return item
         return False
 
-    def save_position(self):
+    def save_position(self, board):
         """
         Save area position in world_map internally as coordinates
         :return: True on success, else False
         """
         try:
-            self.y, self.x = self.get_position()
+            self.world = board
+            self.y, self.x = self.get_position(self.world)
             return True
         except TypeError:
             return False
@@ -111,7 +110,7 @@ class Area:
         adj_x += self.x
         if adj_y >= 0 and adj_x >= 0:
             try:
-                if world_map[adj_y][adj_x] is not None:
+                if self.world[adj_y][adj_x] is not None:
                     return True
             except IndexError:
                 return False
@@ -139,7 +138,7 @@ class Area:
                                 inv_y *= -1
                                 inv_x *= -1
                                 inv_direction = Direction.tostring((inv_y, inv_x))
-                                world_map[adj_y][adj_x].blocked.remove(inv_direction)
+                                self.world[adj_y][adj_x].blocked.remove(inv_direction)
                                 return True
                             except ValueError:
                                 # The other area is missing a block, not good but not fatal
@@ -170,7 +169,7 @@ class Area:
                         inv_y *= -1
                         inv_x *= -1
                         inv_direction = Direction.tostring((inv_y, inv_x))
-                        world_map[adj_y][adj_x].blocked.append(inv_direction)
+                        self.world[adj_y][adj_x].blocked.append(inv_direction)
                         return True
                 except IndexError:
                     # Out of bounds on trying to block adjacent area is not a failure
@@ -179,16 +178,16 @@ class Area:
         return True
 
 
-def initialize_world():
+def initialize_world(world):
     """
     Initialize the world.
     """
-    for row in world_map:
+    for row in world:
         for tile in row:
             if tile is not None:
-                tile.save_position()
+                tile.save_position(world)
 
-    for row in world_map:
+    for row in world:
         for tile in row:
             if tile is not None:
                 for direction in ('north', 'west', 'south', 'east'):
