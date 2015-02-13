@@ -247,7 +247,7 @@ def describe():
     """
     Show area description
     """
-    return 'describe'
+    return 'describe', None
 
 
 def save(target=None):
@@ -273,8 +273,8 @@ def save(target=None):
     # Save world specific information
     world_save = {}
     for row in world.world_map:
-        tile_save = {}
         for tile in row:
+            tile_save = {}
             if tile is None:
                 continue
             item_keys = []
@@ -289,7 +289,7 @@ def save(target=None):
                         item_keys.append(key)
                         continue
 
-            tile_save.update({'items': [x for x in item_keys]})
+            tile_save.update({'items': item_keys})
             tile_save.update({'description': tile.description})
             tile_save.update({'coordinates': (tile.y, tile.x)})
             tile_save.update({'blocked': tile.blocked})
@@ -300,7 +300,7 @@ def save(target=None):
     quest_save = {}
     for key in quest_list:
         quest_save.update({key: {'stage': quest_list[key].stage, 'lock': quest_list[key].lock}})
-    save_data.update({'quest': quest_save})
+    save_data.update({'quests': quest_save})
 
     try:
         json.dump(save_data, open(file, 'w'), indent=4)
@@ -318,11 +318,33 @@ def load(target=None):
     try:
         data = json.load(open(file, 'r'))
 
-        # TODO: LOAD PLAYER
+        player_data = data['player']
+        actor.y, actor.x = player_data['position']
+        player_items = []
+        for item_name in player_data['inventory']:
+            player_items.append(t[item_name])
+        actor.inventory = player_items
 
-        # TODO: LOAD WORLD
+        world_data = data['world']
+        for area in world_data:
+            area_items = []
+            y, x = world_data[area]['coordinates']
+            world.world_map[y][x].description = world_data[area]['description']
+            world.world_map[y][x].blocked = world_data[area]['blocked']
 
-        # TODO: LOAD QUESTS
+            for item_name in world_data[area]['items']:
+                if item_name in f:
+                    area_items.append(f[item_name])
+
+            for item_name in world_data[area]['items']:
+                if item_name in t:
+                    area_items.append(t[item_name])
+            world.world_map[y][x].items = area_items
+
+        quest_data = data['quests']
+        for quest in quest_data:
+            quest_list[quest].lock = quest_data[quest]['lock']
+            quest_list[quest].stage = quest_data[quest]['stage']
 
     except IOError:
         print('Load failed: could not read file.')
