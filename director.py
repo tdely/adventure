@@ -139,8 +139,10 @@ def move(direction=None):
     if direction not in ('north', 'west', 'south', 'east'):
         print("Unknown direction '{0}'.".format(direction))
         return False
-    if actor.move(direction):
-        print('Moved {0}.'.format(direction))
+    if direction not in world.world_map[actor.y][actor.x].blocked:
+        d_y, d_x = world.Direction[direction].value
+        actor.y += d_y
+        actor.x += d_x
         enter_area()
         return True
     print("You can't move {0}.".format(direction))
@@ -158,7 +160,7 @@ def bash(target=None):
     y, x = actor.get_position()
     area = world.world_map[y][x]
     if area.has_item(target):
-            return 'bash', target
+        return 'bash', target
 
     print("You look for '{0}' intent on breaking it, but can't find it.".format(target))
     return False

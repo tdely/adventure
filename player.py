@@ -3,7 +3,6 @@
 """
 Player
 """
-import world
 
 
 class Player:
@@ -15,7 +14,7 @@ class Player:
         self.inventory = []
 
     def __str__(self):
-        return 'Player::position={0}, inventory={1}'.format(self.position, self.inventory)
+        return 'Player::position={0}, inventory={1}'.format((self.y, self.x), self.inventory)
 
     def get_position(self):
         """
@@ -51,17 +50,4 @@ class Player:
         for item in self.inventory:
             if target == item.name:
                 return item
-        return False
-
-    def move(self, direction):
-        """
-        Change player position
-        :param direction: direction to move
-        :return: True on success, else False
-        """
-        if direction not in world.world_map[self.y][self.x].blocked:
-            d_y, d_x = world.Direction[direction].value
-            self.y += d_y
-            self.x += d_x
-            return True
         return False
