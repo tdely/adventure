@@ -3,10 +3,12 @@
 The main file.
 Commands and events
 """
+import json
 import player
 import world
 import events
 from quests import quest_list
+from items import trinket_list as t, furniture_list as f
 
 DEBUG = False
 
@@ -45,6 +47,8 @@ def control():
                's': search,
                'describe': describe,
                'de': describe,
+               'save': save,
+               'load': load,
                'exit': exit_game, }
     try:
         rcode = options[command](*arguments)
@@ -72,6 +76,8 @@ def show_help():
     exa, examine [target]
     s, search
     de, describe [target]
+    save [file]
+    load [file]
     exit''')
     return True
 
@@ -242,6 +248,87 @@ def describe():
     Show area description
     """
     return 'describe'
+
+
+def save(target=None):
+    """
+    Save game to file
+    """
+    file = target if target is not None else 'quicksave.json'
+
+    # Main dictionary
+    save_data = {}
+
+    # Save player specific information
+    player_save = {'position': (actor.y, actor.x)}
+    item_keys = []
+    for key in t:
+        for item in actor.inventory:
+            if t[key] == item:
+                item_keys.append(key)
+                continue
+    player_save.update({'inventory': item_keys})
+    save_data.update({'player': player_save})
+
+    # Save world specific information
+    world_save = {}
+    for row in world.world_map:
+        tile_save = {}
+        for tile in row:
+            if tile is None:
+                continue
+            item_keys = []
+            for key in t:
+                for item in tile.items:
+                    if t[key] == item:
+                        item_keys.append(key)
+                        continue
+            for key in f:
+                for item in tile.items:
+                    if f[key] == item:
+                        item_keys.append(key)
+                        continue
+
+            tile_save.update({'items': [x for x in item_keys]})
+            tile_save.update({'description': tile.description})
+            tile_save.update({'coordinates': (tile.y, tile.x)})
+            tile_save.update({'blocked': tile.blocked})
+            world_save.update({tile.name: tile_save})
+    save_data.update({'world': world_save})
+
+    # Save quest specific information
+    quest_save = {}
+    for key in quest_list:
+        quest_save.update({key: {'stage': quest_list[key].stage, 'lock': quest_list[key].lock}})
+    save_data.update({'quest': quest_save})
+
+    try:
+        json.dump(save_data, open(file, 'w'), indent=4)
+        return True
+    except IOError:
+        print('Save failed: could not write to file.')
+    return False
+
+
+def load(target=None):
+    """
+    Load game from file
+    """
+    file = target if target is not None else 'quicksave.json'
+    try:
+        data = json.load(open(file, 'r'))
+
+        # TODO: LOAD PLAYER
+
+        # TODO: LOAD WORLD
+
+        # TODO: LOAD QUESTS
+
+    except IOError:
+        print('Load failed: could not read file.')
+    except ValueError:
+        print('Load failed: malformed save.')
+    return False
 
 
 def enter_area():
