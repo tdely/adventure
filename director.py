@@ -65,6 +65,30 @@ def control():
     return rcode
 
 
+def play():
+    """
+    Play the game
+    """
+    enter_area()
+    while True:
+        if quest_list['blood and ashes'].stage == 2:
+            print('You completed the game.')
+            break
+
+        rcode = control()
+
+        print(rcode) if DEBUG else None
+
+        if rcode is True or rcode is False:
+            continue
+        if rcode == 'exit':
+            break
+
+        event_handler(rcode)
+
+    print('Thank you for playing!')
+
+
 def show_help():
     """
     List command help
@@ -398,33 +422,11 @@ def event_handler(rcode):
         events.Forest04Event.parse(rcode, actor, current_area)
     elif current_area is world.cv03:
         events.Cave03Event.parse(rcode, actor, current_area)
+    elif current_area is world.cv04:
+        events.Cave04Event.parse(rcode, actor, current_area)
     elif current_area is world.cv05:
         events.Cave05Event.parse(rcode, actor, current_area)
     elif current_area is world.mt03:
         events.Mountain03Event.parse(rcode, actor, current_area)
     else:
         events.Event.parse(rcode, actor, current_area)
-
-
-def play():
-    """
-    Play the game
-    """
-    enter_area()
-    while True:
-        if quest_list['blood and ashes'].stage == 2:
-            print('You completed the game.')
-            break
-
-        rcode = control()
-
-        print(rcode) if DEBUG else None
-
-        if rcode is True or rcode is False:
-            continue
-        if rcode == 'exit':
-            break
-
-        event_handler(rcode)
-
-    print('Thank you for playing!')
