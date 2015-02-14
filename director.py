@@ -303,7 +303,8 @@ def save(target=None):
     # Save quest specific information
     quest_save = {}
     for key in quest_list:
-        quest_save.update({key: {'stage': quest_list[key].stage, 'lock': quest_list[key].lock}})
+        quest_save.update({key: {'stage': quest_list[key].stage, 'lock': quest_list[key].lock,
+                                 'counter': quest_list[key].counter}})
     save_data.update({'quests': quest_save})
 
     try:
@@ -349,10 +350,13 @@ def load(target=None):
         for quest in quest_data:
             quest_list[quest].lock = quest_data[quest]['lock']
             quest_list[quest].stage = quest_data[quest]['stage']
+            quest_list[quest].counter = quest_data[quest]['counter']
 
     except IOError:
         print('Load failed: could not read file.')
     except ValueError:
+        print('Load failed: malformed save.')
+    except KeyError:
         print('Load failed: malformed save.')
     return False
 

@@ -13,6 +13,7 @@ class Quest:
     def __init__(self, intro, progress, complete, lock=False, required_items=None):
         self.lock = lock
         self.stage = 0
+        self.counter = 0  # Optional multipurpose counter
         self.required_items = required_items if required_items is not None else []
         self.dialog_intro = intro
         self.dialog_progress = progress
@@ -77,6 +78,9 @@ quest_list = {'a woodland riddle': Quest('Greetings! I was wondering when a soul
                                          'What am I?',
                                          'You sure got a head on those shoulders, boy.. Here, take this gem as a little'
                                          ' something for humoring an old man.'),
+              'player of games': Quest('You sense a slight change in the atmosphere.',
+                                       'A chill runs down your spine.',
+                                       'Something happens.'),
               'blood and ashes': Quest('None',
                                        'If you find something.. peculiar, please let me know.',
                                        "Thank you, son. I bid you adieu.",
