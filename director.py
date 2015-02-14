@@ -23,6 +23,10 @@ def control():
     rcode = False
     string = input(': ').lower()
     arguments = string.split()
+
+    if len(arguments) == 0:
+        return False
+
     command = arguments.pop(0)
 
     options = {'help': show_help,
