@@ -324,10 +324,41 @@ class Cave05Event(Event):
             Event.take(args, actor, area)
 
 
+class Mountain01Event(Event):
+    """
+    Mountain01 events
+    """
+    @staticmethod
+    def move(args, actor, area):
+        if args[1] == 'east' and t['medallion'] not in actor.inventory:
+            print('You feel unnaturally exhausted and unable to continue.')
+        else:
+            Event.move(args, actor, area)
+
+
+class Mountain02Event(Event):
+    """
+    Mountain02 events
+    """
+    @staticmethod
+    def move(args, actor, area):
+        if t['medallion'] not in actor.inventory:
+            print('You feel unnaturally exhausted and unable to continue.')
+        else:
+            Event.move(args, actor, area)
+
+
 class Mountain03Event(Event):
     """
     Mountain03 events
     """
+    @staticmethod
+    def move(args, actor, area):
+        if t['medallion'] not in actor.inventory:
+            print('You feel unnaturally exhausted and unable to continue.')
+        else:
+            Event.move(args, actor, area)
+
     @staticmethod
     def use(args, actor, area):
         """
@@ -350,10 +381,29 @@ class Mountain03Event(Event):
             Event.use(args, actor, area)
 
 
+class Mountain04Event(Event):
+    """
+    Mountain04 events
+    """
+    @staticmethod
+    def move(args, actor, area):
+        if t['medallion'] not in actor.inventory:
+            print('You feel unnaturally exhausted and unable to continue.')
+        else:
+            Event.move(args, actor, area)
+
+
 class Mountain05Event(Event):
     """
     Mountain05 events
     """
+    @staticmethod
+    def move(args, actor, area):
+        if t['medallion'] not in actor.inventory:
+            print('You feel unnaturally exhausted and unable to continue.')
+        else:
+            Event.move(args, actor, area)
+
     @staticmethod
     def search(args, actor, area):
         """

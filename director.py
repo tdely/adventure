@@ -111,8 +111,14 @@ def event_handler(rcode):
         events.Cave04Event.parse(rcode, actor, current_area)
     elif current_area is world.cv05:
         events.Cave05Event.parse(rcode, actor, current_area)
+    elif current_area is world.mt01:
+        events.Mountain01Event.parse(rcode, actor, current_area)
+    elif current_area is world.mt02:
+        events.Mountain02Event.parse(rcode, actor, current_area)
     elif current_area is world.mt03:
         events.Mountain03Event.parse(rcode, actor, current_area)
+    elif current_area is world.mt04:
+        events.Mountain04Event.parse(rcode, actor, current_area)
     elif current_area is world.mt05:
         events.Mountain05Event.parse(rcode, actor, current_area)
     else:
