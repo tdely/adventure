@@ -376,6 +376,7 @@ def load(target=None):
             quest_list[quest].stage = quest_data[quest]['stage']
             quest_list[quest].counter = quest_data[quest]['counter']
 
+        enter_area()
     except IOError:
         print('Load failed: could not read file.')
     except ValueError:
@@ -428,5 +429,7 @@ def event_handler(rcode):
         events.Cave05Event.parse(rcode, actor, current_area)
     elif current_area is world.mt03:
         events.Mountain03Event.parse(rcode, actor, current_area)
+    elif current_area is world.mt05:
+        events.Mountain05Event.parse(rcode, actor, current_area)
     else:
         events.Event.parse(rcode, actor, current_area)
