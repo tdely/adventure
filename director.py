@@ -89,6 +89,36 @@ def play():
     print('Thank you for playing!')
 
 
+def event_handler(rcode):
+    """
+    Call events for correct area
+    """
+    y, x = actor.get_position()
+    current_area = world.world_map[y][x]
+
+    # Area specific events.
+    if current_area is world.fs01:
+        events.Forest01Event.parse(rcode, actor, current_area)
+    elif current_area is world.fs02:
+        events.Forest02Event.parse(rcode, actor, current_area)
+    elif current_area is world.fs03:
+        events.Forest03Event.parse(rcode, actor, current_area)
+    elif current_area is world.fs04:
+        events.Forest04Event.parse(rcode, actor, current_area)
+    elif current_area is world.cv03:
+        events.Cave03Event.parse(rcode, actor, current_area)
+    elif current_area is world.cv04:
+        events.Cave04Event.parse(rcode, actor, current_area)
+    elif current_area is world.cv05:
+        events.Cave05Event.parse(rcode, actor, current_area)
+    elif current_area is world.mt03:
+        events.Mountain03Event.parse(rcode, actor, current_area)
+    elif current_area is world.mt05:
+        events.Mountain05Event.parse(rcode, actor, current_area)
+    else:
+        events.Event.parse(rcode, actor, current_area)
+
+
 def show_help():
     """
     List command help
@@ -175,10 +205,8 @@ def move(direction=None):
         return False
     if direction not in world.world_map[actor.y][actor.x].blocked:
         d_y, d_x = world.Direction[direction].value
-        actor.y += d_y
-        actor.x += d_x
-        enter_area()
-        return True
+        next_area = world.world_map[actor.y + d_y][actor.x + d_x]
+        return 'move', direction, next_area
     print("You can't move {0}.".format(direction))
     return False
 
@@ -403,33 +431,3 @@ def exit_game():
     else:
         print('Continuing game.')
         return False
-
-
-def event_handler(rcode):
-    """
-    Call events for correct area
-    """
-    y, x = actor.get_position()
-    current_area = world.world_map[y][x]
-
-    # Area specific events.
-    if current_area is world.fs01:
-        events.Forest01Event.parse(rcode, actor, current_area)
-    elif current_area is world.fs02:
-        events.Forest02Event.parse(rcode, actor, current_area)
-    elif current_area is world.fs03:
-        events.Forest03Event.parse(rcode, actor, current_area)
-    elif current_area is world.fs04:
-        events.Forest04Event.parse(rcode, actor, current_area)
-    elif current_area is world.cv03:
-        events.Cave03Event.parse(rcode, actor, current_area)
-    elif current_area is world.cv04:
-        events.Cave04Event.parse(rcode, actor, current_area)
-    elif current_area is world.cv05:
-        events.Cave05Event.parse(rcode, actor, current_area)
-    elif current_area is world.mt03:
-        events.Mountain03Event.parse(rcode, actor, current_area)
-    elif current_area is world.mt05:
-        events.Mountain05Event.parse(rcode, actor, current_area)
-    else:
-        events.Event.parse(rcode, actor, current_area)

@@ -4,6 +4,7 @@ Event handling
 """
 from items import trinket_list as t, furniture_list as f
 from quests import quest_list
+from world import Direction
 import tictactoe
 
 DEBUG = False
@@ -23,6 +24,7 @@ class Event:
                    'take': cls.take,
                    'interact': cls.interact,
                    'inventory': cls.inventory,
+                   'move': cls.move,
                    'drop': cls.drop,
                    'examine': cls.examine,
                    'search': cls.search,
@@ -68,6 +70,17 @@ class Event:
         Default on inventory
         """
         pass
+
+    @staticmethod
+    def move(args, actor, area):
+        """
+        Default on move
+        """
+        d_y, d_x = Direction[args[1]].value
+        actor.y += d_y
+        actor.x += d_x
+        args[2].describe()
+        return True
 
     @staticmethod
     def drop(args, actor, area):
