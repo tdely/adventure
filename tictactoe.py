@@ -268,14 +268,14 @@ def play():
              ['_', '_', '_'],
              ['_', '_', '_'], ]
     
-    print('''
-    Place your marker by coordinates entering coordinates like: 0,0
-    Commands:
-    q: quit
-    s: save
-    l: load
-    ''')
-    input('Enter to continue..')
+    # print('''
+    # Place your marker by coordinates entering coordinates like: 0,0
+    # Commands:
+    # q: quit
+    # s: save
+    # l: load
+    # ''')
+    # input('Enter to continue..')
 
     state = None
 
@@ -284,17 +284,15 @@ def play():
 
         # Your move
         string = input('Your move (y,x): ')
-        if string == 'q':
-            break
-        elif string == 's':
-            __save(board, 'tictactoe.txt')
-            continue
-        elif string == 'o':
-            __load(board, 'tictactoe.txt')
-            continue
+        # if string == 'q':
+        #     break
+        # elif string == 's':
+        #     __save(board, 'tictactoe.txt')
+        #     continue
+        # elif string == 'o':
+        #     __load(board, 'tictactoe.txt')
+        #     continue
         coords = string.strip().split(',')
-        y = None
-        x = None
         try:
             y = int(coords[0])
             x = int(coords[1])
