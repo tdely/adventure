@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-
+Event handling
 """
 from items import trinket_list as t, furniture_list as f
 from quests import quest_list
+import tictactoe
 
 DEBUG = False
 
@@ -171,7 +172,7 @@ class Forest03Event(Event):
                     else:
                         secret.describe()
                 else:
-                    print('Well met.')
+                    print('Well met. Had any luck with your task?')
             if riddle.stage == 0:
                 riddle.describe()
                 riddle.accept()
@@ -214,9 +215,71 @@ class Cave03Event(Event):
     def bash(args, actor, area):
         if args[1] == 'barrel':
             area.items.remove(f['cv03_barrel'])
-            Event.describe(args, actor, area, 'The barrel falls apart as your fist crashes through the brittle wood.')
+            area.items.append(t['key'])
+            Event.describe(args, actor, area, 'The barrel falls apart as your fist crashes through the brittle wood. '
+                                              ' A key lands among the debris.')
         else:
             Event.bash(args, actor, area)
+
+    @staticmethod
+    def interact(args, actor, area):
+        if args[1] == 'game':
+            if tictactoe.play() == 0 and quest_list['player of games'].stage != 2:
+                player = quest_list['player of games']
+                player.counter += 1
+                if player.counter == 1:
+                    player.describe()
+                    player.accept()
+                elif player.counter == 2:
+                    player.describe()
+                elif player.counter == 3:
+                    player.complete(actor.get_inventory())
+                    area.items.append(f['cv03_medallion'])
+                    Event.describe(args, actor, area, player.describe())
+
+    @staticmethod
+    def take(args, actor, area):
+        if args[1] == 'medallion':
+            if f['cv03_medallion'] in actor.inventory:
+                actor.inventory.remove(f['cv03_medallion'])
+                actor.inventory.append(t['medallion'])
+
+
+class Cave04Event(Event):
+    """
+    Cave03 events
+    """
+    @staticmethod
+    def use(args, actor, area):
+        if args[1] == 'key' and args[2] == 'door':
+            if f['cv04_locked-door'] in area.items:
+                area.items.remove(f['cv04_locked-door'])
+                area.items.append(f['cv04_unlocked-door'])
+                Event.describe(args, actor, area, 'You unlock the door. ')
+            elif f['cv04_unlocked-door'] in area.items:
+                area.items.remove(f['cv04_unlocked-door'])
+                area.items.append(f['cv04_locked-door'])
+                Event.describe(args, actor, area, 'You lock the door. ')
+            elif f['cv04_opened-door'] in area.items:
+                print("You can't lock an open door.")
+        else:
+            Event.bash(args, actor, area)
+
+    @staticmethod
+    def interact(args, actor, area):
+        if args[1] == 'door':
+            if f['cv04_locked-door'] in area.items:
+                print('The door is locked.')
+            elif f['cv04_unlocked-door'] in area.items:
+                area.items.remove(f['cv04_unlocked-door'])
+                area.items.append(f['cv04_opened-door'])
+                area.unblock_exit('east')
+                Event.describe(args, actor, area, 'You open the door.')
+            elif f['cv04_opened-door'] in area.items:
+                area.items.remove(f['cv04_opened-door'])
+                area.items.append(f['cv04_unlocked-door'])
+                area.block_exit('east')
+                Event.describe(args, actor, area, 'You open the door.')
 
 
 class Cave05Event(Event):
@@ -272,3 +335,19 @@ class Mountain03Event(Event):
             Event.describe(args, actor, area, 'You scoop the ashes from the altar into the pot.')
         else:
             Event.use(args, actor, area)
+
+
+class Mountain05Event(Event):
+    """
+    Mountain05 events
+    """
+    @staticmethod
+    def search(args, actor, area):
+        """
+        On search
+        """
+        if 'north' in area.blocked:
+            area.unblock_exit('north')
+            area.description = 'The winding mountain path comes to an end, strange markings scattered across the the ' \
+                               'rock walls. You can make out a hidden opening into the mountain.'
+            Event.describe(args, actor, area, 'You spot a previously unseen opening into the mountain.')

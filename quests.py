@@ -71,17 +71,22 @@ class Quest:
         return True
 
 
-quest_list = {'a woodland riddle': Quest('Greetings! I was wondering when a soul would pass by. I fancy myself a bit of'
-                                         ' a riddle maker, care to take on a challenge?',
-                                         'I am the beginning of the end, the end of every place.\n'
-                                         'I am the beginning of eternity, the end of time and space.\n'
-                                         'What am I?',
-                                         'You sure got a head on those shoulders, boy.. Here, take this gem as a little'
-                                         ' something for humoring an old man.'),
-              'player of games': Quest('You sense a slight change in the atmosphere.',
-                                       'A chill runs down your spine.',
-                                       'Something happens.'),
-              'blood and ashes': Quest('None',
-                                       'If you find something.. peculiar, please let me know.',
-                                       "Thank you, son. I bid you adieu.",
-                                       required_items=[t['ashes']]), }
+quest_list = {
+    'a woodland riddle': Quest(
+        'Greetings! I was wondering when a soul would pass by. I fancy myself a bit of a riddle maker, care to take on '
+        'a challenge?',
+        'I am the beginning of the end, the end of every place.\n'
+        'I am the beginning of eternity, the end of time and space.\n'
+        'What am I?',
+        "You sure got a head on those shoulders, boy.. Say, you wouldn't mind helping an old man out, would you?."
+        "There is an old place of worship up in the mountains, I need you to go there. Find the altar and smash this "
+        "gem. Can't do it my self, someone like me can't traverse the harsh path."),
+    'player of games': Quest(
+        'You sense a slight change in the atmosphere.',
+        'A chill runs down your spine.',
+        "You notice a medallion next to the board, you could swear it wasn't there a moment ago."),
+    'blood and ashes': Quest(
+        'None',
+        'If you find something.. peculiar, please let me know.',
+        "Thank you, son. I bid you adieu.",
+        required_items=[t['ashes']]), }

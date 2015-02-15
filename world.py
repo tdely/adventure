@@ -219,9 +219,9 @@ cv01 = Area(None, 'cave01', ['west'],
             'It is a damp cave, the only light coming from the west doorway, facing the forest.')
 cv02 = Area(None, 'cave02', None,
             'It is a damp cave, the only light is coming from the west.')
-cv03 = Area([f['cv03_barrel']], 'cave03', ['south'],
+cv03 = Area([f['cv03_barrel'], f['cv03_game']], 'cave03', ['south'],
             'It is a dark and damp cave, there is little light escaping this far in.')
-cv04 = Area(None, 'cave04', ['south'],
+cv04 = Area([f['cv04_locked-door']], 'cave04', ['south', 'east'],
             'It is a dark and damp cave, there is little light escaping this far in.')
 cv05 = Area([f['cv05_chest']], 'cave05', ['north', 'south'],
             'It is a dark and damp cave, it is nearly pitch black.')
@@ -231,12 +231,11 @@ mt01 = Area(None, 'mountain01', ['west'],
 mt02 = Area(None, 'mountain02', ['east', 'north'],
             'The winding mountain path continues, strange markings scattered across the the rock walls.')
 mt03 = Area([f['mt03_altar']], 'mountain03', ['west', 'north'],
-            'The mountain path ends in a larger open area, the strange markings from the path cover the walls.')
+            'A spacious cave carved out of the mountain into a hall. Pews line the path to the back of the room.')
 mt04 = Area(None, 'mountain04', ['west'],
             'The winding mountain path continues, strange markings scattered across the the rock walls.')
-mt05 = Area(None, 'mountain05', None,
-            'The winding mountain path continues, strange markings scattered across the the rock walls. You can make '
-            'out an larger opening to the north.')
+mt05 = Area(None, 'mountain05', ['north'],
+            'The winding mountain path comes to a dead end, strange markings scattered across the the rock walls.')
 
 start_area = (0, 0)
 
