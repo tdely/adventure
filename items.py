@@ -42,7 +42,7 @@ class Trinket(Item):
 furniture_list = {
     'cv03_medallion': Furniture('medallion', 'A medallion lies next to the game on top of the crate.',
                                 "A golden wolf's head in profile, with a red cord.",
-                                breakable=False, obtainable=False),
+                                breakable=False, obtainable=True),
     'fs01_axe': Furniture('axe', 'An old woodcutters axe sits buried in a tree stump.',
                           "The axe looks like it's been left here for a long time.",
                           breakable=False, obtainable=True),
