@@ -78,7 +78,7 @@ quest_list = {
         'I am the beginning of the end, the end of every place.\n'
         'I am the beginning of eternity, the end of time and space.\n'
         'What am I?',
-        "You sure got a head on those shoulders, boy.. Say, you wouldn't mind helping an old man out, would you?."
+        "You sure got a head on those shoulders, boy.. Say, you wouldn't mind helping an old man out, would you?. "
         "There is an old place of worship up in the mountains, I need you to go there. Find the altar and smash this "
         "gem. Can't do it my self, someone like me can't traverse the harsh path."),
     'player of games': Quest(

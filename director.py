@@ -140,8 +140,8 @@ def show_help():
     exa, examine [target]
     s, search
     de, describe [target]
-    save [file]
-    load [file]
+    save [file -optional]
+    load [file -optional]
     exit''')
     return True
 

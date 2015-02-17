@@ -58,7 +58,7 @@ furniture_list = {
     'cv04_unlocked-door': Furniture('door', 'A large door blocks the path east.',
                                     'It appears to be unlocked.',
                                     breakable=True, obtainable=False),
-    'cv04_opened-door': Furniture('door', 'The doorway east is open.',
+    'cv04_opened-door': Furniture('door', 'The doorway to the east is open.',
                                   "It's open.",
                                   breakable=True, obtainable=False),
     'fs02_door': Furniture('door', 'A sturdy door blocks the entrance to the cave.',
