@@ -27,12 +27,14 @@ def main():
     args = parser.parse_args()
 
     if args.cheat:
-        print('Walkthrough: take axe, move east, use axe door, move east, move east, move south, move east, bash chest,'
-              'take hammer, move west, move north, move west, move west, move west, move south, interact man, e'
-              ', use axe tree move south move east, move north, search, take pot, move south, move south, move east, '
-              'move north, move east, move south, move east, move north, use ruby altar, use hammer ruby, use pot ashes'
-              ', move south, move west, move north, move west, move south, move west, move north, move west, move north'
-              ', interact man, y.')
+        print('Take the axe and move east. Use the axe on the door, move east three times, bash the barrel and retrieve'
+              ' the key. Interact with the game and win three times, then take the medallion. Move west, then south, '
+              'then east again. Bash the chest and take the hammer. Move out of the cave and back to the first area, '
+              "then go south and interact with the man, Give the answer 'e' to his riddle. Use the axe on the tree, "
+              'then move south, east, and back north. Search the area, and take the pot that is found. Now go south, '
+              'south, east, north, east, south, east, north. Use the ruby with the altar, then use the hammer on the '
+              'ruby. Use the pot with the ashes and go back and interact with the man.\n\n A save at the very end of'
+              "the game is available through 'load finalsave.json'")
         return
 
     director.play()
