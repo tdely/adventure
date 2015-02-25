@@ -41,7 +41,7 @@ def main():
               'then move south, east, and back north. Search the area, and take the pot that is found. Now go south, '
               'south, east, north, east, south, east, north. Use the ruby with the altar, then use the hammer on the '
               'ruby. Use the pot with the ashes and go back and interact with the man.\n\n A save at the very end of'
-              "the game is available through 'load finalsave.json'")
+              "the game is available through 'load finalsave'")
         return
 
     director.play()
