@@ -1,0 +1,260 @@
+{
+    "quests": {
+        "a woodland riddle": {
+            "counter": 0,
+            "lock": false,
+            "stage": 2
+        },
+        "player of games": {
+            "counter": 3,
+            "lock": false,
+            "stage": 2
+        },
+        "blood and ashes": {
+            "counter": 0,
+            "lock": false,
+            "stage": 1
+        }
+    },
+    "world": {
+        "forest02": {
+            "description": "A clearing lies to the west, and a cave lies to the east.",
+            "coordinates": [
+                0,
+                1
+            ],
+            "items": [],
+            "blocked": [
+                "south",
+                "north"
+            ]
+        },
+        "mountain01": {
+            "description": "Where the forest ends, a mountain path with high walls begin. There are strange markings on the rock. A chasm lies to the north.",
+            "coordinates": [
+                2,
+                2
+            ],
+            "items": [],
+            "blocked": [
+                "west",
+                "north"
+            ]
+        },
+        "cave03": {
+            "description": "It is a dark and damp cave, there is little light escaping this far in.",
+            "coordinates": [
+                0,
+                4
+            ],
+            "items": [
+                "cv03_game"
+            ],
+            "blocked": [
+                "south",
+                "north",
+                "east"
+            ]
+        },
+        "cave04": {
+            "description": "It is a dark and damp cave, there is little light escaping this far in.",
+            "coordinates": [
+                1,
+                3
+            ],
+            "items": [
+                "cv04_opened-door"
+            ],
+            "blocked": [
+                "south",
+                "west"
+            ]
+        },
+        "forest06": {
+            "description": "The path comes to a crossroads in the thick forest. To the north lies an old bridge across the stream, to the west the mountain, impassable from here.",
+            "coordinates": [
+                2,
+                1
+            ],
+            "items": [],
+            "blocked": [
+                "east"
+            ]
+        },
+        "mountain02": {
+            "description": "The winding mountain path continues, strange markings scattered across the the rock walls.",
+            "coordinates": [
+                2,
+                3
+            ],
+            "items": [],
+            "blocked": [
+                "east",
+                "north"
+            ]
+        },
+        "forest05": {
+            "description": "A stream lies to the north, a newly felled tree acting as a bridge. A stagnant pond lies south, better not get too close..",
+            "coordinates": [
+                2,
+                0
+            ],
+            "items": [],
+            "blocked": [
+                "west",
+                "south"
+            ]
+        },
+        "forest03": {
+            "description": "A stream blocks the path south. Remains of a bridge lie on both sides of the stream. A newly felled tree bridges the stream.",
+            "coordinates": [
+                1,
+                0
+            ],
+            "items": [
+                "fs03_man"
+            ],
+            "blocked": [
+                "east",
+                "west"
+            ]
+        },
+        "forest08": {
+            "description": "The forest ends with the mountain which lies ahead, impassable except for the path to the north.",
+            "coordinates": [
+                3,
+                2
+            ],
+            "items": [],
+            "blocked": [
+                "east",
+                "south"
+            ]
+        },
+        "cave05": {
+            "description": "It is a dark and damp cave, it is nearly pitch black.",
+            "coordinates": [
+                1,
+                4
+            ],
+            "items": [],
+            "blocked": [
+                "north",
+                "south",
+                "east"
+            ]
+        },
+        "mountain04": {
+            "description": "The winding mountain path continues, strange markings scattered across the the rock walls.",
+            "coordinates": [
+                3,
+                3
+            ],
+            "items": [],
+            "blocked": [
+                "west",
+                "south"
+            ]
+        },
+        "forest07": {
+            "description": "A few rays of sunlight penetrate the forest canopy. A stagnant pond lies west, better not get too close.",
+            "coordinates": [
+                3,
+                1
+            ],
+            "items": [],
+            "blocked": [
+                "west",
+                "south"
+            ]
+        },
+        "forest04": {
+            "description": "The forest is thick as the path ends. A bridge of dubious sturdiness lies across the stream south. The stream ends in a fall into a chasm to the east.",
+            "coordinates": [
+                1,
+                1
+            ],
+            "items": [],
+            "blocked": [
+                "west",
+                "north",
+                "east"
+            ]
+        },
+        "mountain05": {
+            "description": "The winding mountain path comes to an end, strange markings scattered across the the rock walls. You can make out a hidden opening into the mountain.",
+            "coordinates": [
+                3,
+                4
+            ],
+            "items": [],
+            "blocked": [
+                "south",
+                "east"
+            ]
+        },
+        "cave02": {
+            "description": "It is a damp cave, the only light is coming from the west.",
+            "coordinates": [
+                0,
+                3
+            ],
+            "items": [],
+            "blocked": [
+                "north"
+            ]
+        },
+        "forest01": {
+            "description": "A clearing in the forest, created by logging some time ago if the old tree stumps are anything to go by.",
+            "coordinates": [
+                0,
+                0
+            ],
+            "items": [],
+            "blocked": [
+                "north",
+                "west"
+            ]
+        },
+        "mountain03": {
+            "description": "A spacious cave carved out of the mountain into a hall. Pews line the path to the back of the room.",
+            "coordinates": [
+                2,
+                4
+            ],
+            "items": [
+                "mt03_altar"
+            ],
+            "blocked": [
+                "west",
+                "north",
+                "east"
+            ]
+        },
+        "cave01": {
+            "description": "It is a damp cave, the only light coming from the west doorway, facing the forest.",
+            "coordinates": [
+                0,
+                2
+            ],
+            "items": [],
+            "blocked": [
+                "north",
+                "south"
+            ]
+        }
+    },
+    "player": {
+        "inventory": [
+            "key",
+            "medallion",
+            "ashes",
+            "hammer",
+            "axe"
+        ],
+        "position": [
+            1,
+            0
+        ]
+    }
+}
