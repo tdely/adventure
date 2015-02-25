@@ -5,11 +5,12 @@ Commands and events
 """
 import os
 import json
-import player
-import world
+
+from lib import world, events, player
 import events
 from quests import quest_list
 from items import trinket_list as t, furniture_list as f
+
 
 save_dir = os.path.abspath(
     os.path.join(os.path.dirname(__file__), 'save')

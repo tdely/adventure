@@ -3,10 +3,17 @@
 """
 Adventure
 """
+import os
 import sys
 import argparse
 import textwrap
-import director
+
+local_module_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), 'lib')
+)
+sys.path.append(local_module_path)
+
+from lib import director
 
 
 def main():

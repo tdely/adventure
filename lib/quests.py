@@ -3,7 +3,7 @@
 """
 Quests
 """
-from items import trinket_list as t
+from lib.items import trinket_list as t
 
 
 class Quest:

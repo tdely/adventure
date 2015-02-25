@@ -2,8 +2,9 @@
 """
 The world
 """
-from items import furniture_list as f
 from enum import Enum
+
+from lib.items import furniture_list as f
 
 
 class Direction(Enum):

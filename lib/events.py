@@ -2,10 +2,10 @@
 """
 Event handling
 """
-from items import trinket_list as t, furniture_list as f
-from quests import quest_list
-from world import Direction
-import tictactoe
+from lib.items import trinket_list as t, furniture_list as f
+from lib.quests import quest_list
+from lib.world import Direction
+from lib import tictactoe
 
 DEBUG = False
 
