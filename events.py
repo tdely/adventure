@@ -79,6 +79,7 @@ class Event:
         d_y, d_x = Direction[args[1]].value
         actor.y += d_y
         actor.x += d_x
+        print(chr(27) + '[2J' + chr(27) + '[;H')
         args[2].describe()
         return True
 
