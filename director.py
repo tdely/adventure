@@ -3,12 +3,17 @@
 The main file.
 Commands and events
 """
+import os
 import json
 import player
 import world
 import events
 from quests import quest_list
 from items import trinket_list as t, furniture_list as f
+
+save_dir = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), 'save')
+)
 
 DEBUG = False
 
@@ -366,7 +371,7 @@ def save(target=None):
     save_data.update({'quests': quest_save})
 
     try:
-        json.dump(save_data, open(file, 'w'), indent=4)
+        json.dump(save_data, open(os.path.join(save_dir, file), 'w'), indent=4)
         return True
     except IOError:
         print('Save failed: could not write to file.')
@@ -379,7 +384,7 @@ def load(target=None):
     """
     file = target if target is not None else 'quicksave.json'
     try:
-        data = json.load(open(file, 'r'))
+        data = json.load(open(os.path.join(save_dir, file), 'r'))
 
         player_data = data['player']
         actor.y, actor.x = player_data['position']
