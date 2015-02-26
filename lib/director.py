@@ -7,9 +7,8 @@ import os
 import json
 
 from lib import world, events, player
-import events
-from quests import quest_list
-from items import trinket_list as t, furniture_list as f
+from lib.quests import quest_list
+from lib.items import trinket_list as t, furniture_list as f
 
 save_dir = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', 'save')
